@@ -11,6 +11,7 @@ Public Class clsProBGTools
 
             sql = getSQLProbaug(baulastblattnr)
             sql = getSQLProbaugALt(baulastblattnr)
+            sql="select * from GisView2Belastet"
             sqlgeschlossen = "SELECT  feld3 from obj01bla "
             initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
             Debug.Print(rawList.Count.ToString)
