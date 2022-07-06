@@ -32,6 +32,45 @@ Public Class clsProBGTools
             l("Fehler in holeProBaugDaten: " & sql & ex.ToString())
         End Try
     End Sub
+
+    Private Shared Function getSQLProbaugALt(baulastblattnr As Integer) As String
+        Dim sql As String = "select * from gisview2 order by feld9 desc"
+        Try
+            l(" MOD ---------------------- anfang")
+            sql = "SELECT OBJ01BL.FELD4, OBJ01BL.FELD5, OBJ01BL.FELD9, " &
+            "OBJ03.FELD3, OBJ03.FELD4, OBJ03.FELD5, OBJ03.FELD6, OBJ03.FELD7 ,OBJ01BL.FELD1, OBJVG.FELD1, OBJVG.FELD2, " &
+            "OBJVG.FELD3, ALB.FELD5, ALB.FELD4 ,OBJ01BL.FELD3,OBJ01BL.FELD6 as krof2,OBJ01BL.FELD7 as krof2 " &
+            "FROM OBJ01BL LEFT OUTER JOIN OBJVG ON OBJVG.FELD4 = OBJ01BL.FELD1,  OBJ03 LEFT OUTER JOIN ALB ON ALB.FELD1 = OBJ03.FELD4 AND ALB.FELD2 = OBJ03.FELD5 AND ALB.FELD3 = OBJ03.FELD6 WHERE OBJ01BL.FELD1 = OBJ03.FELD1"
+
+            sql = "SELECT OBJ01BL.FELD4 as a1, OBJ01BL.FELD5 as a2, OBJ01BL.FELD9 as a3, OBJ03.FELD3 as a4, OBJ03.FELD4 as a5, " &
+                "OBJ03.FELD5 as a6, OBJ03.FELD6 as a7, OBJ03.FELD7 as a8,OBJ01BL.FELD1 as a9, OBJVG.FELD1 as a10," &
+                "OBJVG.FELD2 as a11, OBJVG.FELD3 as a12, ALB.FELD5 as a13, ALB.FELD4 as a14,OBJ01BL.FELD3 as a15,OBJ01BL.FELD6 as angelegt," &
+                "OBJ01BL.FELD7 as loesch,OBJ01BL.FELD8 as beschr  " &
+                "FROM OBJ01BL LEFT OUTER JOIN OBJVG ON OBJVG.FELD4 = OBJ01BL.FELD1, " &
+                " OBJ03 LEFT OUTER JOIN ALB ON ALB.FELD1 = OBJ03.FELD4 AND ALB.FELD2 = OBJ03.FELD5 AND ALB.FELD3 = OBJ03.FELD6 " &
+                "WHERE OBJ01BL.FELD1 = OBJ03.FELD1"
+
+            'OBJ01BL.FELD7  is gelöscht datum
+            'OBJ01BL.FELD4 is blnr
+            sql = sql & " and    OBJ01BL.FELD7 =' '"
+            '----------------------------
+            'sql = sql & "   and OBJ01BL.FELD4 ='90764' "
+            'sql = sql & "   and OBJ01BL.FELD4 ='90764' "
+            'sql = sql & "   and OBJ01BL.FELD4 ='20937' " 'pose mehrfach
+            'sql = sql & "   and OBJ01BL.FELD4 ='2026' " 'pose mehrfach
+            'sql = sql & "   and OBJ01BL.FELD4 =3103  'and OBJ01BL.FELD7 =' '"
+            'sql = "select * from gisview2  where feld10=2017  order by feld9 desc"
+            sql = sql & "   and OBJ01BL.FELD4 ='" & baulastblattnr & "' "
+            Return sql
+
+
+            l(" MOD getSQLProbaug ende")
+        Catch ex As Exception
+            l("Fehler in getSQLProbaug: " & ex.ToString())
+            Return ""
+        End Try
+    End Function
+
     Friend Shared Function getSQLProbaug(baulastblattnr As Integer) As String
         Dim sql As String = "select * from gisview2 order by feld9 desc"
         Try
@@ -184,7 +223,7 @@ Public Class clsProBGTools
             nachricht("OracleConnection open")
             com = New SqlCommand(sql, oOracleConn) '"select * from " & tabname$
             Dim da As New SqlDataAdapter(com)
-            da.MissingSchemaAction = MissingSchemaAction.AddWithKey
+            'da.MissingSchemaAction = MissingSchemaAction.AddWithKey
             nachricht("fill")
             Console.WriteLine("vor fill")
             _mycount = da.Fill(dt)

@@ -221,7 +221,7 @@ Module tools
         Return dict
     End Function
 
-    Function dtnachobj(balistDT As DataTable, geschlossen As DataTable) As List(Of clsBaulast)
+    Function dtnachobjALT(balistDT As DataTable, geschlossen As DataTable) As List(Of clsBaulast)
         Dim nlist As New List(Of clsBaulast)
         Dim lok As New clsBaulast
         Dim evtlFlur As String
@@ -237,6 +237,62 @@ Module tools
 #End If
                 lok = New clsBaulast
                 lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a1")).Trim '21478
+                lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a2")).Trim '1
+#If DEBUG Then
+                If lok.blattnr = "90764" Then
+                    Debug.Print("")
+                End If
+#End If
+                lok.bauortNr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a4")).Trim '2
+                lok.probaugNotationFST.gemcode = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("a5")).Trim) '5
+                evtlFlur = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a6")).Trim '10
+                Console.WriteLine("iz1 " & iz)
+
+                If evtlFlur.IsNothingOrEmpty Then
+                    lok.probaugNotationFST.flur = 0
+                Else
+                    If IsNumeric(evtlFlur) Then
+                        lok.probaugNotationFST.flur = CInt(evtlFlur)
+                    Else
+                        lok.probaugNotationFST.flur = 0
+                    End If
+                End If
+                lok.probaugNotationFST.fstueckKombi = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a7")).Trim '406/1
+                lok.gueltig = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a8")).Trim 'J
+                lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("a10"))).Trim 'leer
+                lok.status = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a3")).Trim '1
+                lok.laufnr = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("a9"))) '17655
+                lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
+                lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                'b = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a13")).Trim
+                If istgeschlossen(lok.blattnr, geschlossen) Then Continue For
+                iz += 1
+                nlist.Add(lok)
+            Next
+            Return nlist
+            l("dtnachobj ---------------------- ende")
+        Catch ex As Exception
+            l("Fehler in dtnachobj: " & ex.ToString())
+            Return Nothing
+        End Try
+    End Function
+    Function dtnachobj(balistDT As DataTable, geschlossen As DataTable) As List(Of clsBaulast)
+        Dim nlist As New List(Of clsBaulast)
+        Dim lok As New clsBaulast
+        Dim evtlFlur As String
+        Dim b As String
+        Dim iz As Integer = 0
+        Try
+            l("dtnachobj ---------------------- anfang")
+#If DEBUG Then
+            'For i = 0 To 100
+            For i = 0 To balistDT.Rows.Count - 1
+#Else
+            For i = 0 To balistDT.Rows.Count - 1
+#End If
+                lok = New clsBaulast
+                lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim '21478
                 lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a2")).Trim '1
 #If DEBUG Then
                 If lok.blattnr = "90764" Then
