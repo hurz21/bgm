@@ -86,8 +86,17 @@
                                         <!--<DataGridTextColumn Header="Zähler"   Binding="{Binding zaehler}" />
                                         <DataGridTextColumn Header="Nenner"   Binding="{Binding nenner}" />-->
                                         <DataGridTextColumn Header=""  Binding="{Binding fstueckKombi}" />
-                                        <DataGridTextColumn Header="gültig"  Binding="{Binding gueltig}" />
+                                        <DataGridTextColumn Header="g"  Binding="{Binding gueltig}" />
                                         <DataGridTextColumn Header="k"  Binding="{Binding gebucht}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzJahr}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzOG}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzNr}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding Prefix}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding Kennziffer_1}" />
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding Kennziffer_2}" />
+                                        <DataGridTextColumn Header="k2"  Binding="{Binding Kennziffer_3}" />
+                                        <DataGridTextColumn Header="k3"  Binding="{Binding Kennziffer_4}" />
+                                        <DataGridTextColumn Header="k4"  Binding="{Binding gebucht}" />
                                         <!--<DataGridTextColumn Header="fs"    Binding="{Binding FS}" />-->
                                     </DataGrid.Columns>
                                 </DataGrid>

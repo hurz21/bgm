@@ -29,6 +29,27 @@
     Public Property datum1 As String = ""
     Public Property datumgeloescht As String = ""
     Public Property genese As Integer = 1
+
+    Property HSchl As String = ""
+    Property AzJahr As String = ""
+    Property AzOG As String = ""
+    Property AzNr As String = ""
+    Property Rechtswert As String = ""
+    Property Hochwert As String = ""
+    Property Prefix As String = ""
+    Property Kennziffer_1 As String = ""
+    Property Kennziffer_2 As String = ""
+    Property Kennziffer_3 As String = ""
+    Property Kennziffer_4 As String = ""
+
+
+
+
+
+
+
+
+
 End Class
 Public Class myComboBoxItem
     Property mySttring As String

@@ -11,8 +11,9 @@ Public Class clsProBGTools
 
             sql = getSQLProbaug(baulastblattnr)
             sql = getSQLProbaugALt(baulastblattnr)
-            sql="select * from GisView2Belastet"
-            sqlgeschlossen = "SELECT  feld3 from obj01bla "
+            sql = "select * from GisView2Belastet where FELD1=" & baulastblattnr
+            'sqlgeschlossen = "SELECT  feld3 from obj01bla "
+            sqlgeschlossen = sql
             initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
             Debug.Print(rawList.Count.ToString)
             If rawList.Count < 1 Then
@@ -24,6 +25,14 @@ Public Class clsProBGTools
                     rawList(i).katFST.fstueckKombi = rawList(i).katFST.buildFstueckkombi
                     rawList(i).katFST.gueltig = rawList(i).gueltig
                     rawList(i).katFST.gebucht = rawList(i).baulastnr
+                    rawList(i).katFST.Prefix = rawList(i).Prefix
+                    rawList(i).katFST.AzNr = rawList(i).AzNr
+                    rawList(i).katFST.AzJahr = rawList(i).AzJahr
+                    rawList(i).katFST.AzOG = rawList(i).AzOG
+                    rawList(i).katFST.Kennziffer_1 = rawList(i).Kennziffer_1
+                    rawList(i).katFST.Kennziffer_2 = rawList(i).Kennziffer_2
+                    rawList(i).katFST.Kennziffer_3 = rawList(i).Kennziffer_3
+                    rawList(i).katFST.Kennziffer_4 = rawList(i).Kennziffer_4
                     FSTausPROBAUGListe.Add(rawList(i).katFST)
                 Next
             End If

@@ -292,16 +292,16 @@ Module tools
             For i = 0 To balistDT.Rows.Count - 1
 #End If
                 lok = New clsBaulast
-                lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim '21478
-                lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a2")).Trim '1
+                lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim ' 
+                lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2")).Trim '1
 #If DEBUG Then
                 If lok.blattnr = "90764" Then
                     Debug.Print("")
                 End If
 #End If
-                lok.bauortNr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a4")).Trim '2
-                lok.probaugNotationFST.gemcode = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("a5")).Trim) '5
-                evtlFlur = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a6")).Trim '10
+                lok.bauortNr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD4")).Trim '2
+                lok.probaugNotationFST.gemcode = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD5")).Trim) '5
+                evtlFlur = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD6")).Trim '10
                 Console.WriteLine("iz1 " & iz)
 
                 If evtlFlur.IsNothingOrEmpty Then
@@ -313,14 +313,27 @@ Module tools
                         lok.probaugNotationFST.flur = 0
                     End If
                 End If
-                lok.probaugNotationFST.fstueckKombi = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a7")).Trim '406/1
-                lok.gueltig = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a8")).Trim 'J
-                lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("a10"))).Trim 'leer
-                lok.status = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a3")).Trim '1
-                lok.laufnr = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("a9"))) '17655
-                lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
-                lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
-                lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                lok.probaugNotationFST.fstueckKombi = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD7")).Trim '406/1
+                lok.gueltig = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD8")).Trim 'J
+            
+                lok.status = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD3")).Trim '1
+                'lok.laufnr = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD9"))) '17655
+                lok.laufnr = 0 'CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2"))) 'keine ahnung
+
+                lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
+                lok.AzJahr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
+                lok.AzOG = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD11"))).Trim 'leer
+                lok.aznr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD12"))).Trim 'leer
+                    lok.rechtswert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD13"))).Trim 'leer
+                    lok.hochwert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD14"))).Trim 'leer
+                    lok.prefix = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD15"))).Trim 'leer
+                    lok.Kennziffer_1 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD16"))).Trim 'leer
+                    lok.Kennziffer_2 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD17"))).Trim 'leer
+                    lok.Kennziffer_3 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD18"))).Trim 'leer
+                    lok.Kennziffer_4 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD19"))).Trim 'leer
+             '   lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
+              '  lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+               ' lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
                 'b = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a13")).Trim
                 If istgeschlossen(lok.blattnr, geschlossen) Then Continue For
                 iz += 1
@@ -339,7 +352,8 @@ Module tools
             l(" MOD istgeschlossen anfang")
             For Each ds As DataRow In geschlossen.AsEnumerable
                 If CStr(ds.Item(0)) = blattnr Then
-                    Return True
+                    Return False
+                    'Return True
                 End If
             Next
             Return False

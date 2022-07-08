@@ -10,6 +10,17 @@ Public Class clsFlurstueck
     Protected Sub OnPropertyChanged(ByVal prop As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(prop))
     End Sub
+    Property HSchl As String = ""
+    Property AzJahr As String = ""
+    Property AzOG As String = ""
+    Property AzNr As String = ""
+    Property Rechtswert As String = ""
+    Property Hochwert As String = ""
+    Property Prefix As String = ""
+    Property Kennziffer_1 As String = ""
+    Property Kennziffer_2 As String = ""
+    Property Kennziffer_3 As String = ""
+    Property Kennziffer_4 As String = ""
 
     Public Property zeigtauf As String
     Public Property weistauf As String
