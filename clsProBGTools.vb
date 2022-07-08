@@ -3,15 +3,15 @@
 Public Class clsProBGTools
     Shared Property ProbauGIstOracle As Boolean = False
 
-    Public Shared Sub holeProBaugDaten(baulastblattnr As Integer)
+    Public Shared Sub holeProBaugDaten(baulastblattnr As Integer, quelleSQL As String)
         Dim sql, sqlgeschlossen As String
         Try
             l(" MOD holeProBaugDaten anfang")
             '
-
+            FSTausPROBAUGListe.Clear()
             sql = getSQLProbaug(baulastblattnr)
             sql = getSQLProbaugALt(baulastblattnr)
-            sql = "select * from GisView2Belastet where FELD1=" & baulastblattnr
+            sql = "select * from " & quelleSQL & " where FELD1=" & baulastblattnr
             'sqlgeschlossen = "SELECT  feld3 from obj01bla "
             sqlgeschlossen = sql
             initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt

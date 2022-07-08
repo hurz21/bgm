@@ -1,5 +1,6 @@
 ﻿Public Class winDetail
     Property VGmyBitmapImage As New BitmapImage
+    Public Property quelleSQL As String = "gisview2belastet"
     Dim modus As String = "neu"
 
     Sub New(gisID As String)
@@ -27,7 +28,7 @@
         End If
 #End If
         If IsNumeric(tbBaulastNr.Text) Then
-            refreshProbaug(CInt(tbBaulastNr.Text))
+            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
             refreshGIS(CInt(tbBaulastNr.Text))
             refreshTIFFbox()
             'hier wird firstrange calculiert
@@ -96,7 +97,7 @@
     End Sub
 
     Private Sub refreshall()
-        refreshProbaug(CInt(tbBaulastNr.Text))
+        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
         refreshGIS(CInt(tbBaulastNr.Text))
         refreshTIFFbox()
         refreshMap()
@@ -161,13 +162,13 @@
         Canvas.SetLeft(VGcanvasImage, 0)
     End Sub
 
-    Private Sub refreshProbaug(baulastblattnr As Integer)
+    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String)
 
         Try
             l(" MOD refreshProbaug anfang")
             dgAusProbaug.DataContext = Nothing
             tools.FSTausPROBAUGListe.Clear()
-            clsProBGTools.holeProBaugDaten(baulastblattnr)
+            clsProBGTools.holeProBaugDaten(baulastblattnr, sqlquelle)
             dgAusProbaug.DataContext = FSTausPROBAUGListe
             tbBauort.Text = rawList(0).bauortNr
             tbDatum1.Text = rawList(0).datum1
@@ -557,5 +558,23 @@
             item.serial = tools.wkt
         Next
         writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 2) '1=aus katasterdaten übernommen
+    End Sub
+
+    Private Sub chkQuelle_Click(sender As Object, e As RoutedEventArgs)
+        e.Handled = True
+        Try
+            If chkQuelle.IsChecked Then
+                quelleSQL = "   gisview2belastet "
+                tbQuelle.Text = " Belastet aus Probaug"
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+
+            Else
+                quelleSQL = "   gisview2 "
+                tbQuelle.Text = " Begünstigt aus Probaug"
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class
