@@ -1,6 +1,7 @@
 ﻿Public Class winDetail
     Property VGmyBitmapImage As New BitmapImage
     Public Property quelleSQL As String = "gisview2belastet"
+    Public Property targetGISTabelle As String = "hartmann"
     Dim modus As String = "neu"
 
     Sub New(gisID As String)
@@ -562,16 +563,21 @@
 
     Private Sub chkQuelle_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
+        Dim grayBrush As SolidColorBrush = New SolidColorBrush(Colors.Gray)
+        Dim blueBrush As SolidColorBrush = New SolidColorBrush(Colors.Blue)
         Try
             If chkQuelle.IsChecked Then
                 quelleSQL = "   gisview2belastet "
+                targetGISTabelle = "baulaschten_f"
                 tbQuelle.Text = " Belastet aus Probaug"
                 refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
-
+                dpMain.Background = grayBrush
             Else
                 quelleSQL = "   gisview2 "
                 tbQuelle.Text = " Begünstigt aus Probaug"
                 refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+                dpMain.Background = blueBrush
+                targetGISTabelle = "baul_guen_f"
             End If
         Catch ex As Exception
 

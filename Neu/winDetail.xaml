@@ -23,7 +23,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <DockPanel Background="Gray"  >
+    <DockPanel Background="Gray" Name="dpMain"  >
         <TabControl Margin="5">
             <TabItem   >
                 <StackPanel Margin="5" Background="LightGray">
