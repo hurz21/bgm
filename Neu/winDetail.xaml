@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bgm"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="BGM - BaulastenGISManager 0.11" Height="730.209" Width="995.513">
+        Title="BGM - BaulastenGISManager 0.11" Height="730.209" Width="1295.513">
     <Window.Resources>
         <Style x:Key="dgRowStyleRB" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource dgRowStyle}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding STATUS}" Value="1">
+                <!--<DataTrigger Binding="{Binding STATUS}" Value="1">
                     <Setter Property="Foreground" Value="blue" />
                     <Setter Property="ToolTip" Value="Dieser Eintrag ist eine Verlinkung mit einem Verwandten Vorgang" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <DataTrigger Binding="{Binding gueltig}" Value="N">
                     <Setter Property="Background" Value="Red" />
                 </DataTrigger>
@@ -29,7 +29,9 @@
                 <StackPanel Margin="5" Background="LightGray">
 
 
-                    <StackPanel Orientation="Horizontal" Margin="5"  AllowDrop="True" Drop="StackPanel_Drop">
+                    <StackPanel Orientation="Horizontal" Margin="5"  AllowDrop="True" 
+                                Name="spTop"
+                                Drop="StackPanel_Drop">
                         <TextBlock Width="100" Margin="5" Padding="5" Height="30">Baulasten-BlattNr.:</TextBlock>
                         <TextBox Name="tbBaulastNr" Width="100" Margin="5" Padding="5" Height="30"></TextBox>
                         <Button Name="btnAusProbaug" Click="btnAusProbaug_Click" Width="100"
@@ -68,8 +70,9 @@
                         </GroupBox>
                     </StackPanel>
 
-                    <StackPanel Name="spFST" Orientation="Horizontal" Width="950"  HorizontalAlignment="Left">
-                        <Border BorderBrush="Green" BorderThickness="1" Margin="5"  HorizontalAlignment="Left" >
+                    <StackPanel Name="spFST" Orientation="Horizontal" Width="1250"  HorizontalAlignment="Left">
+                        <Border BorderBrush="Green" BorderThickness="1" Margin="5" 
+                                HorizontalAlignment="Left" >
 
                             <StackPanel HorizontalAlignment="Left">
                                 <StackPanel Orientation="Horizontal">
@@ -81,7 +84,7 @@
                                 <DataGrid  x:Name="dgAusProbaug"   ItemsSource="{Binding ''}"      Margin="5"                                           
                                               RowStyle="{StaticResource dgRowStyleRB}"                                        
                                               ColumnHeaderStyle="{StaticResource dgHeaderStyle}"    
-                                     Width="350"   MaxHeight="160" Height="160"
+                                     Width="650"   MaxHeight="160" Height="160"
                                    >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Gemarkung"      Binding="{Binding gemarkungstext}"     />
@@ -89,18 +92,18 @@
                                         <DataGridTextColumn Header="Flur"  Binding="{Binding flur}" />
                                         <!--<DataGridTextColumn Header="Zähler"   Binding="{Binding zaehler}" />
                                         <DataGridTextColumn Header="Nenner"   Binding="{Binding nenner}" />-->
-                                        <DataGridTextColumn Header=""  Binding="{Binding fstueckKombi}" />
-                                        <DataGridTextColumn Header="g"  Binding="{Binding gueltig}" />
-                                        <DataGridTextColumn Header="k"  Binding="{Binding gebucht}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzJahr}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzOG}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding AzNr}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding Prefix}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding Kennziffer_1}" />
-                                        <DataGridTextColumn Header="k1"  Binding="{Binding Kennziffer_2}" />
-                                        <DataGridTextColumn Header="k2"  Binding="{Binding Kennziffer_3}" />
-                                        <DataGridTextColumn Header="k3"  Binding="{Binding Kennziffer_4}" />
-                                        <DataGridTextColumn Header="k4"  Binding="{Binding gebucht}" />
+                                        <DataGridTextColumn Header="Fst"  Binding="{Binding fstueckKombi}" />
+                                        <DataGridTextColumn Header="g"  Binding="{Binding gueltig}"  ToolTipService.ToolTip="gültig" />
+                                        <DataGridTextColumn Header="BlNr"  Binding="{Binding gebucht}" />
+                                        <DataGridTextColumn Header="AzJahr"  Binding="{Binding AzJahr}" />
+                                        <!--<DataGridTextColumn Header="og"  Binding="{Binding AzOG}" />-->
+                                        <DataGridTextColumn Header="AzNr"  Binding="{Binding AzNr}" />
+                                        <!--<DataGridTextColumn Header="Prefix"  Binding="{Binding Prefix}" />-->
+                                        <DataGridTextColumn Header="k1"  Binding="{Binding Kennziffer_1}" ToolTipService.ToolTip="Kennziffer1" />
+                                        <DataGridTextColumn Header="k2"  Binding="{Binding Kennziffer_2}" ToolTipService.ToolTip="Kennziffer2" />
+                                        <DataGridTextColumn Header="k3"  Binding="{Binding Kennziffer_3}" ToolTipService.ToolTip="Kennziffer3" />
+                                        <DataGridTextColumn Header="k4"  Binding="{Binding Kennziffer_4}" ToolTipService.ToolTip="Kennziffer4"  />
+                                        <!--<DataGridTextColumn Header="gebucht"  Binding="{Binding gebucht}" />-->
                                         <!--<DataGridTextColumn Header="fs"    Binding="{Binding FS}" />-->
                                     </DataGrid.Columns>
                                 </DataGrid>

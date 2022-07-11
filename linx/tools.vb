@@ -293,7 +293,7 @@ Module tools
 #End If
                 lok = New clsBaulast
                 lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim ' 
-                lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2")).Trim '1
+                lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2")).Trim '1  sonst als gebucht
 #If DEBUG Then
                 If lok.blattnr = "90764" Then
                     Debug.Print("")
@@ -322,12 +322,12 @@ Module tools
 
                 lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
                 lok.AzJahr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
-                lok.AzOG = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD11"))).Trim 'leer
+                lok.AzOG = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD11"))).Trim 'leer blödsinn
                 lok.aznr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD12"))).Trim 'leer
                     lok.rechtswert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD13"))).Trim 'leer
                     lok.hochwert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD14"))).Trim 'leer
-                    lok.prefix = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD15"))).Trim 'leer
-                    lok.Kennziffer_1 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD16"))).Trim 'leer
+                lok.Prefix = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD15"))).Trim 'leer immmer
+                lok.Kennziffer_1 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD16"))).Trim 'leer
                     lok.Kennziffer_2 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD17"))).Trim 'leer
                     lok.Kennziffer_3 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD18"))).Trim 'leer
                     lok.Kennziffer_4 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD19"))).Trim 'leer
@@ -858,10 +858,14 @@ Module tools
         Return basis
     End Function
 
-    Sub write2postgis(lok As clsBaulast, ByRef erfolg As Boolean, ByRef sql As String, coordinatesystemNumber As String, datei As String, datei2 As String, genese As Integer)
-        l("write2postgis " & sql)
+    Sub write2postgis(lok As clsBaulast, ByRef erfolg As Boolean, ByRef sql As String,
+                      coordinatesystemNumber As String, datei As String, datei2 As String,
+                      genese As Integer, outputTablename As String)
+        l("write2postgis nichtverwendet " & tools.srv_tablename)
+        l("write2postgis verwendet " & outputTablename)
+
         Try
-            sql = "INSERT INTO " & tools.srv_schema & "." & tools.srv_tablename & " " &
+            sql = "INSERT INTO " & tools.srv_schema & "." & outputTablename & " " &
                          "(geom,fs,kennzeichen1,baulastnr,jahr_blattnr,bauort,gueltig," &
                          "datum,flur,flurstueck,zaehler,nenner,gefundenin,tiff,gemeinde,gemarkung,gemcode,genese,tiff2) " &
                          "VALUES( ST_GeomFromText('" & lok.serial & "'," & coordinatesystemNumber & "),'" &

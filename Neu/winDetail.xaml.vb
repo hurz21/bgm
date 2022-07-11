@@ -233,17 +233,19 @@
     Private Sub btnVonProbaugNachGISkopieren_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
         IO.Directory.CreateDirectory(tools.baulastenoutDir)
-        getAllSerials(anzahl_mitSerial, tools.baulastenoutDir & "Baulasten_ohneAktFlurstueck" & Now.ToString("yyyyMMddhhmm") & ".csv")
+        getAllSerials(anzahl_mitSerial, tools.baulastenoutDir & "\Baulasten_ohneAktFlurstueck" & Now.ToString("yyyyMMddhhmm") & ".csv")
         ___showdispatcher("  BL mit Geometrie: " & anzahl_mitSerial & Environment.NewLine)
         ___showdispatcher("BL werden in die DB geschrieben ...  bitte warten " & Environment.NewLine)
-        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 1) '1=aus katasterdaten übernommen
+
+        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 1, targetGISTabelle) '1=aus katasterdaten übernommen
+
         ___showdispatcher("  ausschreiben fertig: " & Environment.NewLine)
         refreshGIS(CInt(tbBaulastNr.Text))
         Dim gidstring As String = clsGIStools.bildegidstring()
         range = clsGIStools.calcNewRange(gidstring)
         refreshMap()
     End Sub
-    Sub writeallWithSerials(auchUngueltige As Boolean, genese As Integer)
+    Sub writeallWithSerials(auchUngueltige As Boolean, genese As Integer, outputTablename As String)
         Dim iz As Integer = 0
         Dim erfolg As Boolean
         Dim sql As String
@@ -278,10 +280,10 @@
                 If lok.geloescht Then Continue For
 
                 If auchUngueltige Then
-                    write2postgis(lok, erfolg, sql, coordinatesystemNumber, datei, datei2, genese)
+                    write2postgis(lok, erfolg, sql, coordinatesystemNumber, datei, datei2, genese, outputTablename)
                 Else
                     If lok.gueltig.ToLower = "j" Then
-                        write2postgis(lok, erfolg, sql, coordinatesystemNumber, datei, datei2, genese)
+                        write2postgis(lok, erfolg, sql, coordinatesystemNumber, datei, datei2, genese, outputTablename)
                     End If
                 End If
 
@@ -558,26 +560,26 @@
         For Each item As clsBaulast In rawList
             item.serial = tools.wkt
         Next
-        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 2) '1=aus katasterdaten übernommen
+        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 2, targetGISTabelle) '1=aus katasterdaten übernommen
     End Sub
 
     Private Sub chkQuelle_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
-        Dim grayBrush As SolidColorBrush = New SolidColorBrush(Colors.Gray)
-        Dim blueBrush As SolidColorBrush = New SolidColorBrush(Colors.Blue)
+        Dim grayBrush As SolidColorBrush = New SolidColorBrush(Colors.LightGray)
+        Dim blueBrush As SolidColorBrush = New SolidColorBrush(Colors.AliceBlue)
         Try
             If chkQuelle.IsChecked Then
                 quelleSQL = "   gisview2belastet "
                 targetGISTabelle = "baulaschten_f"
                 tbQuelle.Text = " Belastet aus Probaug"
                 refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
-                dpMain.Background = grayBrush
+                spTop.Background = grayBrush
             Else
                 quelleSQL = "   gisview2 "
                 tbQuelle.Text = " Begünstigt aus Probaug"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
-                dpMain.Background = blueBrush
+                spTop.Background = blueBrush
                 targetGISTabelle = "baul_guen_f"
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
             End If
         Catch ex As Exception
 

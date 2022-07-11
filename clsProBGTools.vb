@@ -11,7 +11,7 @@ Public Class clsProBGTools
             FSTausPROBAUGListe.Clear()
             sql = getSQLProbaug(baulastblattnr)
             sql = getSQLProbaugALt(baulastblattnr)
-            sql = "select * from " & quelleSQL & " where FELD1=" & baulastblattnr
+            sql = "select distinct * from " & quelleSQL & " where FELD1=" & baulastblattnr & " order by feld2"
             'sqlgeschlossen = "SELECT  feld3 from obj01bla "
             sqlgeschlossen = sql
             initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
