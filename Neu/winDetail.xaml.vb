@@ -52,10 +52,14 @@
             refreshMap()
             tbEigentuemer.Text = toolsEigentuemer.geteigentuemertext(tools.FSTausGISListe)
         End If
-        Title = "BGM: BaulastenGISManager 0.11. " & Environment.UserName & " V.: " & bgmVersion
 
+        setTitle(alteVersion)
 
         l("windetail loaded ende")
+    End Sub
+
+    Private Sub setTitle(alteversion As Boolean)
+        Title = "BGM: BaulastenGISManager 0.11. " & Environment.UserName & " V.: " & bgmVersion & " AlteprobauGVersion ?: " & alteversion
     End Sub
 
     Private Sub refreshTIFFbox()
@@ -571,14 +575,14 @@
                 quelleSQL = "   gisview2belastet "
                 targetGISTabelle = "baulaschten_f"
                 tbQuelle.Text = " Belastet aus Probaug"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
                 spTop.Background = grayBrush
             Else
                 quelleSQL = "   gisview2 "
                 tbQuelle.Text = " Begünstigt aus Probaug"
                 spTop.Background = blueBrush
                 targetGISTabelle = "baul_guen_f"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
             End If
         Catch ex As Exception
 
