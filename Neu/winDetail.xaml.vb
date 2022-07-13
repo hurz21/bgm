@@ -1,5 +1,6 @@
 ﻿Public Class winDetail
     Property VGmyBitmapImage As New BitmapImage
+    Property alteVersion As Boolean = True
     Public Property quelleSQL As String = "gisview2belastet"
     Public Property targetGISTabelle As String = "hartmann"
     Dim modus As String = "neu"
@@ -29,7 +30,7 @@
         End If
 #End If
         If IsNumeric(tbBaulastNr.Text) Then
-            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
             refreshGIS(CInt(tbBaulastNr.Text))
             refreshTIFFbox()
             'hier wird firstrange calculiert
@@ -98,7 +99,7 @@
     End Sub
 
     Private Sub refreshall()
-        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
         refreshGIS(CInt(tbBaulastNr.Text))
         refreshTIFFbox()
         refreshMap()
@@ -155,15 +156,13 @@
         'clstools.saveImageasThumbnail2(clstools.auswahlBplan, clstools.BPLcachedir, VGmyBitmapImage)
     End Sub
     Private Sub refreshMap()
-
-
         Dim url As String = mapTools.genPreviewURL(tools.range, CInt(VGmapCanvas.Width), CInt(VGmapCanvas.Height), "flurkarte", 0, tools.gidInString)
         setPreviewImageFromHttpURL(url)
         Canvas.SetTop(VGcanvasImage, 0)
         Canvas.SetLeft(VGcanvasImage, 0)
     End Sub
 
-    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String)
+    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String, alteVersion As Boolean)
 
         Try
             l(" MOD refreshProbaug anfang")
