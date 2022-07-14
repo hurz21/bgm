@@ -1,6 +1,6 @@
 ﻿Public Class winDetail
     Property VGmyBitmapImage As New BitmapImage
-    Property alteVersion As Boolean = True
+
     Public Property quelleSQL As String = "gisview2belastet"
     Public Property targetGISTabelle As String = "hartmann"
     Dim modus As String = "neu"
@@ -30,7 +30,7 @@
         End If
 #End If
         If IsNumeric(tbBaulastNr.Text) Then
-            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
+            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
             refreshGIS(CInt(tbBaulastNr.Text))
             refreshTIFFbox()
             'hier wird firstrange calculiert
@@ -53,13 +53,13 @@
             tbEigentuemer.Text = toolsEigentuemer.geteigentuemertext(tools.FSTausGISListe)
         End If
 
-        setTitle(alteVersion)
+        setTitle()
 
         l("windetail loaded ende")
     End Sub
 
-    Private Sub setTitle(alteversion As Boolean)
-        Title = "BGM: BaulastenGISManager 0.11. " & Environment.UserName & " V.: " & bgmVersion & " AlteprobauGVersion ?: " & alteversion
+    Private Sub setTitle()
+        Title = "BGM: BaulastenGISManager 0.11. " & Environment.UserName & " V.: " & bgmVersion
     End Sub
 
     Private Sub refreshTIFFbox()
@@ -103,7 +103,7 @@
     End Sub
 
     Private Sub refreshall()
-        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
+        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
         refreshGIS(CInt(tbBaulastNr.Text))
         refreshTIFFbox()
         refreshMap()
@@ -166,7 +166,7 @@
         Canvas.SetLeft(VGcanvasImage, 0)
     End Sub
 
-    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String, alteVersion As Boolean)
+    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String)
 
         Try
             l(" MOD refreshProbaug anfang")
@@ -575,14 +575,14 @@
                 quelleSQL = "   gisview2belastet "
                 targetGISTabelle = "baulaschten_f"
                 tbQuelle.Text = " Belastet aus Probaug"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
                 spTop.Background = grayBrush
             Else
                 quelleSQL = "   gisview2 "
                 tbQuelle.Text = " Begünstigt aus Probaug"
                 spTop.Background = blueBrush
                 targetGISTabelle = "baul_guen_f"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, alteVersion)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
             End If
         Catch ex As Exception
 
