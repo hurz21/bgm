@@ -160,7 +160,7 @@
         'clstools.saveImageasThumbnail2(clstools.auswahlBplan, clstools.BPLcachedir, VGmyBitmapImage)
     End Sub
     Private Sub refreshMap()
-        Dim url As String = mapTools.genPreviewURL(tools.range, CInt(VGmapCanvas.Width), CInt(VGmapCanvas.Height), "flurkarte", 0, tools.gidInString)
+        Dim url As String = mapTools.genPreviewURL(tools.range, CInt(VGmapCanvas.Width), CInt(VGmapCanvas.Height), "flurkarte", 10, tools.gidInString)
         setPreviewImageFromHttpURL(url)
         Canvas.SetTop(VGcanvasImage, 0)
         Canvas.SetLeft(VGcanvasImage, 0)
@@ -469,7 +469,9 @@
 
     Private Sub dropTheBomb(sender As Object, e As DragEventArgs)
         e.Handled = True
-        droptiff(e)
+        'droptiff(e)
+
+        dropPDF(e)
     End Sub
 
     Private Sub btndeleteTIFF_Click(sender As Object, e As RoutedEventArgs)
@@ -503,7 +505,7 @@
 
     Private Sub StackPanel_Drop(sender As Object, e As DragEventArgs)
         e.Handled = True
-
+        'soll nur die nummer übernehmen
         Dim filenames As String()
         Dim zuielname As String = ""
         Dim listeZippedFiles, listeNOnZipFiles, allFeiles As New List(Of String)
