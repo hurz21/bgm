@@ -367,7 +367,7 @@ Module tools
 
     Function calcDateiname(lok As clsBaulast) As String
         Dim datei As String
-        datei = pfad & lok.probaugNotationFST.gemarkungstext & "\" & lok.blattnr & ".tiff"
+        datei = pfad & lok.probaugNotationFST.gemarkungstext & "\" & lok.blattnr & ".pdf"
         Return datei
     End Function
 

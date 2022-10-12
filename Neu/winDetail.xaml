@@ -158,20 +158,21 @@
                                     >
                             <StackPanel   >
 
-                                <TextBlock Width="100" Margin="5">TIFF/PDF:</TextBlock>
+                                <TextBlock Width="100" Margin="5">PDF:</TextBlock>
                                 <StackPanel Orientation="Vertical"    Drop="dropTheBomb" AllowDrop="True"  Height="350" >
                                     <Border BorderBrush="Black"  Margin="5" BorderThickness="1"
                                         Drop="dropTheBomb" AllowDrop="True"
                                         Width="100" Height="150" Panel.ZIndex="2"
                                     >
-                                        <Image Name="imgTiff" VerticalAlignment="Top"    Drop="dropTheBomb" AllowDrop="True"></Image>
+                                        <TextBlock Padding="5">Drop PDF here</TextBlock>
+                                        <!--<Image Name="imgTiff" VerticalAlignment="Top"    Drop="dropTheBomb" AllowDrop="True"></Image>-->
                                     </Border>
                                     <TextBlock Name="tbFiledate" Padding="5" />
                                     <Button Name="btndeleteTIFF" Click="btndeleteTIFF_Click" Content=" X " Margin="5"
                                     Foreground="Red"    FontWeight="Black" Background="LightGray" Visibility="Collapsed"
                                     ToolTip="TIFF- und PDF-Datei auf Server löschen"/>
                                     <Button x:Name="btnTiffaufrufen" Click="btnTiffaufrufen_Click"  Margin="5"
-                                            Panel.ZIndex="10" Visibility="Visible"
+                                            Panel.ZIndex="10" Visibility="Collapsed"
                                             Height="30">Tiff anzeigen</Button>
                                     <Button x:Name="btnPDFaufrufen" Click="btnPDFaufrufen_Click"  Margin="5"
                                             Panel.ZIndex="10" Visibility="Visible"

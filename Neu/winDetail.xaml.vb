@@ -63,12 +63,12 @@
     End Sub
 
     Private Sub refreshTIFFbox()
-        refreshTiffBitmap()
+        'refreshTiffBitmap()
         If rawList.Count > 0 Then
 
             Dim fi As New IO.FileInfo(rawList(0).datei)
             If fi.Exists Then
-                tbFiledate.Text = fi.LastWriteTime.ToShortDateString
+                tbFiledate.Text = "Gescannt: " & fi.LastWriteTime.ToShortDateString
             Else
                 tbFiledate.Text = "fehlt"
             End If
@@ -189,29 +189,30 @@
     End Sub
 
     Public Function refreshTiffBitmap() As Boolean
-        Dim bitmap As BitmapImage = New BitmapImage()
+        Return True
+        'Dim bitmap As BitmapImage = New BitmapImage()
 
-        Try
-            l(" MOD refreshTiffBitmap anfang")
-            If rawList(0).dateiExistiert Then
-                'btnTiffaufrufen.Visibility = Visibility.Visible 
-                bitmap.BeginInit()
-                bitmap.CacheOption = BitmapCacheOption.OnLoad ' verhindert fehler beim löschen
-                bitmap.UriSource = New Uri(rawList(0).datei)
-                bitmap.EndInit()
-                imgTiff.Source = bitmap
-                bitmap = Nothing
-                Return True
-            Else
-                'btnTiffaufrufen.Visibility = Visibility.Collapsed
-                Return Nothing
-            End If
+        'Try
+        '    l(" MOD refreshTiffBitmap anfang")
+        '    If rawList(0).dateiExistiert Then
+        '        'btnTiffaufrufen.Visibility = Visibility.Visible 
+        '        bitmap.BeginInit()
+        '        bitmap.CacheOption = BitmapCacheOption.OnLoad ' verhindert fehler beim löschen
+        '        bitmap.UriSource = New Uri(rawList(0).datei)
+        '        bitmap.EndInit()
+        '        imgTiff.Source = bitmap
+        '        bitmap = Nothing
+        '        Return True
+        '    Else
+        '        'btnTiffaufrufen.Visibility = Visibility.Collapsed
+        '        Return Nothing
+        '    End If
 
-            l(" MOD refreshTiffBitmap ende")
-        Catch ex As Exception
-            l("Fehler in refreshTiffBitmap: " & ex.ToString())
-            Return False
-        End Try
+        '    l(" MOD refreshTiffBitmap ende")
+        'Catch ex As Exception
+        '    l("Fehler in refreshTiffBitmap: " & ex.ToString())
+        '    Return False
+        'End Try
     End Function
 
     Private Sub btnTiffaufrufen_Click(sender As Object, e As RoutedEventArgs)
@@ -482,7 +483,7 @@
             Exit Sub
         End If
         If clsGIStools.loescheTiffaufGISServer(tbBaulastNr.Text.Trim, tools.FSTausPROBAUGListe(0).gemarkungstext.Trim) Then
-            imgTiff.Source = Nothing
+            'imgTiff.Source = Nothing
             MessageBox.Show("Gelöscht")
         Else
             MessageBox.Show("Fehler beim Löschen.")
