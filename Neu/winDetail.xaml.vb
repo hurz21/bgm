@@ -74,7 +74,7 @@
             Else
                 tbFiledate.Text = "fehlt"
                 tbFiledate.Foreground = New SolidColorBrush(Colors.Red)
-                tbFiledate.Background = New SolidColorBrush(Colors.LightGray)
+                tbFiledate.Background = New SolidColorBrush(Colors.White)
             End If
         Else
             tbFiledate.Text = "keine gisdaten"

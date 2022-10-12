@@ -252,4 +252,49 @@ Public Class clsProBGTools
     Private Shared Sub ___showdispatcher(v As String)
         nachricht(v)
     End Sub
+
+    Friend Shared Sub holeAlleBeguenstigten()
+        ' get alle begünstigten
+
+        ' schleife
+        '     objekte bilden
+        '     write
+        Dim targetGISTabelle = "baul_guen_f"
+        Dim sql, sqlgeschlossen As String
+        Try
+            l(" MOD holeProBaugDaten anfang")
+            '
+            FSTausPROBAUGListe.Clear()
+            'sql = getSQLProbaug(baulastblattnr)
+            'sql = getSQLProbaugALt(baulastblattnr)
+            sql = "select distinct * from gisview2 " '& quelleSQL '& " where FELD1=" & baulastblattnr & " order by feld2"
+            'sqlgeschlossen = "SELECT  feld3 from obj01bla "
+            sqlgeschlossen = sql
+            initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
+            Debug.Print(rawList.Count.ToString)
+            If rawList.Count < 1 Then
+                MessageBox.Show("Probaug lieferte keine sauberen Daten zu BaulastBlattNr: " & baulastblattnr & ". Bitte zuerst auf ProbauG-Seite in Ordnung bringen.")
+            Else
+                l("vor schlkeife ")
+                For i = 0 To rawList.Count - 1
+                    rawList(i).katFST.gemarkungstext = rawList(i).katFST.gemparms.gemcode2gemarkungstext(rawList(i).katFST.gemcode)
+                    rawList(i).katFST.fstueckKombi = rawList(i).katFST.buildFstueckkombi
+                    rawList(i).katFST.gueltig = rawList(i).gueltig
+                    rawList(i).katFST.gebucht = rawList(i).baulastnr
+                    rawList(i).katFST.Prefix = rawList(i).Prefix
+                    rawList(i).katFST.AzNr = rawList(i).AzNr
+                    rawList(i).katFST.AzJahr = rawList(i).AzJahr
+                    rawList(i).katFST.AzOG = rawList(i).AzOG
+                    rawList(i).katFST.Kennziffer_1 = rawList(i).Kennziffer_1
+                    rawList(i).katFST.Kennziffer_2 = rawList(i).Kennziffer_2
+                    rawList(i).katFST.Kennziffer_3 = rawList(i).Kennziffer_3
+                    rawList(i).katFST.Kennziffer_4 = rawList(i).Kennziffer_4
+                    FSTausPROBAUGListe.Add(rawList(i).katFST)
+                Next
+            End If
+            l(" MOD holeProBaugDaten ende")
+        Catch ex As Exception
+            l("Fehler in holeProBaugDaten: " & sql & ex.ToString())
+        End Try
+    End Sub
 End Class
