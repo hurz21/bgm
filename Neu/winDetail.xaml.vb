@@ -349,8 +349,8 @@
                 rawList(0).datei = zuielname
                 l(" MOD dropped 5")
                 'pdfdatei erzeugen
-                clsTIFFtools.zerlegeMultipageTIFF(zuielname, tools.baulastenoutDir)
-                refreshTIFFbox()
+                'clsTIFFtools.zerlegeMultipageTIFF(zuielname, tools.baulastenoutDir)
+                'refreshTIFFbox()
                 Dim erfolg As Boolean = clsGIStools.updateGISDB(tbBaulastNr.Text, zuielname, tools.FSTausPROBAUGListe(0).gemarkungstext.Trim, endung)
                 If erfolg Then
                     Dim mesres As MessageBoxResult
