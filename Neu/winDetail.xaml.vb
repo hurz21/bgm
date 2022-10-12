@@ -68,9 +68,13 @@
 
             Dim fi As New IO.FileInfo(rawList(0).datei)
             If fi.Exists Then
-                tbFiledate.Text = "Gescannt: " & fi.LastWriteTime.ToShortDateString
+                tbFiledate.Text = "Scan: " & fi.LastWriteTime.ToShortDateString
+                tbFiledate.Foreground = New SolidColorBrush(Colors.Green)
+                tbFiledate.Background = New SolidColorBrush(Colors.LightGray)
             Else
                 tbFiledate.Text = "fehlt"
+                tbFiledate.Foreground = New SolidColorBrush(Colors.Red)
+                tbFiledate.Background = New SolidColorBrush(Colors.LightGray)
             End If
         Else
             tbFiledate.Text = "keine gisdaten"
