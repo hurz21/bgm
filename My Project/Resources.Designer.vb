@@ -61,7 +61,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die 18.10.2022 10:19:06,53  
+        '''  Sucht eine lokalisierte Zeichenfolge, die 21.10.2022 11:13:05,06  
         ''' ähnelt.
         '''</summary>
         Friend ReadOnly Property BuildDate() As String

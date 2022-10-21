@@ -29,8 +29,8 @@ Public Class clsTIFFtools
             Image.Dispose()
             Image = Nothing
 
-            wrapItextSharp.defineDinA4Dina3Formate()
-            wrapItextSharp.createImagePdf(pngs, outpdf, 500, 600, True, outdirTempTIFF)
+            'wrapItextSharp.defineDinA4Dina3Formate()
+            'wrapItextSharp.createImagePdf(pngs, outpdf, 500, 600, True, outdirTempTIFF)
             l(" MOD zerlegeMultipageTIFF ende ok")
             Return True
         Catch ex As Exception
