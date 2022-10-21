@@ -5,7 +5,7 @@
     Private Sub winHaupt_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         e.Handled = True
         If isAutho() Then
-            'its ok
+            'its ok  21478  21504
             tbblnr.Text = "21504"
             '"POLYGON ((479015 5538655,479033 5538660,479035 5538656,479017 5538650,479015 5538655))" 
         Else

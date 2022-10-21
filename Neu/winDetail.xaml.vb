@@ -1,4 +1,6 @@
-﻿Public Class winDetail
+﻿Imports Org.BouncyCastle.Asn1.Esf
+
+Public Class winDetail
     Property VGmyBitmapImage As New BitmapImage
 
     Public Property quelleSQL As String = "gisview2belastet"
@@ -38,16 +40,16 @@
             range = clsGIStools.calcNewRange(gidInString)
             If Not range.istBrauchbar Then
                 btndigit.Visibility = Visibility.Visible
-                If My.Computer.Clipboard.ContainsText Then
-                    tools.wkt = My.Computer.Clipboard.GetText()
-                    If tools.wkt.Trim.ToLower.StartsWith("polygon") Then
-                        btndigit.ToolTip = "Klick = Übernehmen dieser Geometrie als temporäres Flurstück !" & tools.wkt
-                    Else
-                        btndigit.ToolTip = "Das ist keine gültige Geometrie: " & tools.wkt
-                    End If
-                Else
-                    MessageBox.Show("Sie können ein Flurstück selber markieren ! Näheres bei Frau Hartmann. ")
-                End If
+                'If My.Computer.Clipboard.ContainsText Then
+                '    tools.wkt = My.Computer.Clipboard.GetText()
+                '    If tools.wkt.Trim.ToLower.StartsWith("polygon") Then
+                '        btndigit.ToolTip = "Klick = Übernehmen dieser Geometrie als temporäres Flurstück !" & tools.wkt
+                '    Else
+                '        btndigit.ToolTip = "Das ist keine gültige Geometrie: " & tools.wkt
+                '    End If
+                'Else
+                '    MessageBox.Show("Sie können ein Flurstück selber markieren ! Näheres bei Frau Hartmann. ")
+                'End If
             End If
             refreshMap()
             tbEigentuemer.Text = toolsEigentuemer.geteigentuemertext(tools.FSTausGISListe)
@@ -177,7 +179,7 @@
             dgAusProbaug.DataContext = Nothing
             tools.FSTausPROBAUGListe.Clear()
             clsProBGTools.holeProBaugDaten(baulastblattnr, sqlquelle)
-            clsProBGTools.holeProBaugDatenZusatz(baulastblattnr, sqlquelle)
+            'clsProBGTools.holeProBaugDatenZusatz(baulastblattnr, sqlquelle)
             dgAusProbaug.DataContext = FSTausPROBAUGListe
             tbBauort.Text = rawList(0).bauortNr
             tbDatum1.Text = rawList(0).datum1
@@ -241,18 +243,26 @@
 
     Private Sub btnVonProbaugNachGISkopieren_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
+        setzeQuellUndTargetTabelle()
         IO.Directory.CreateDirectory(tools.baulastenoutDir)
         getAllSerials(anzahl_mitSerial, tools.baulastenoutDir & "\Baulasten_ohneAktFlurstueck" & Now.ToString("yyyyMMddhhmm") & ".csv")
-        ___showdispatcher("  BL mit Geometrie: " & anzahl_mitSerial & Environment.NewLine)
-        ___showdispatcher("BL werden in die DB geschrieben ...  bitte warten " & Environment.NewLine)
+        If anzahl_mitSerial < 1 Then
+            MsgBox("In der DB wurden KEINE geometrien gefunden!!!! " & vbNewLine &
+                   "Bitte per hand nachdigitalisieren")
+            btndigit.Visibility = Visibility.Visible
+        Else
+            ___showdispatcher("  BL mit Geometrie: " & anzahl_mitSerial & Environment.NewLine)
+            ___showdispatcher("BL werden in die DB geschrieben ...  bitte warten " & Environment.NewLine)
 
-        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 1, targetGISTabelle) '1=aus katasterdaten übernommen
+            'writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 1, targetGISTabelle) '1=aus katasterdaten übernommen
+            writeallWithSerials(False, 1, targetGISTabelle) '1=aus katasterdaten übernommen
 
-        ___showdispatcher("  ausschreiben fertig: " & Environment.NewLine)
-        refreshGIS(CInt(tbBaulastNr.Text))
-        Dim gidstring As String = clsGIStools.bildegidstring()
-        range = clsGIStools.calcNewRange(gidstring)
-        refreshMap()
+            ___showdispatcher("  ausschreiben fertig: " & Environment.NewLine)
+            refreshGIS(CInt(tbBaulastNr.Text))
+            Dim gidstring As String = clsGIStools.bildegidstring()
+            range = clsGIStools.calcNewRange(gidstring)
+            refreshMap()
+        End If
     End Sub
     Sub writeallWithSerials(auchUngueltige As Boolean, genese As Integer, outputTablename As String)
         Dim iz As Integer = 0
@@ -568,14 +578,37 @@
     Private Sub btndigit_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
         'genese = 2 '2-selbst digitalisiert, 1 = aus dem kataster
-        For Each item As clsBaulast In rawList
-            item.serial = tools.wkt
-        Next
-        writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 2, targetGISTabelle) '1=aus katasterdaten übernommen
+        setzeQuellUndTargetTabelle()
+        If My.Computer.Clipboard.ContainsText Then
+            tools.wkt = My.Computer.Clipboard.GetText()
+            If tools.wkt.Trim.ToLower.StartsWith("polygon") Then
+                btndigit.ToolTip = "Klick = Übernehmen dieser Geometrie als temporäres Flurstück !" & tools.wkt
+            Else
+                btndigit.ToolTip = "Das ist keine gültige Geometrie: " & tools.wkt
+            End If
+
+            Dim msgres As New MessageBoxResult
+            msgres = MessageBox.Show("Ihr Polygon: " & vbNewLine & vbNewLine &
+                                    tools.wkt & vbNewLine & vbNewLine &
+                                        "Möchten Sie diese Geometrie übernehmen? (j/n) ", "Geometrie übernehmen", MessageBoxButton.YesNo, MessageBoxImage.Question)
+            If msgres = MessageBoxResult.Yes Then
+                For Each item As clsBaulast In rawList
+                    item.serial = tools.wkt
+                Next
+                'writeallWithSerials(CBool(cbAuchUnguetige.IsChecked), 2, targetGISTabelle) '1=aus katasterdaten übernommen
+                writeallWithSerials(False, 2, targetGISTabelle) '1=aus katasterdaten übernommen
+            End If
+        End If
+
+
     End Sub
 
     Private Sub chkQuelle_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
+        setzeQuellUndTargetTabelle()
+    End Sub
+
+    Private Sub setzeQuellUndTargetTabelle()
         Dim grayBrush As SolidColorBrush = New SolidColorBrush(Colors.LightGray)
         Dim blueBrush As SolidColorBrush = New SolidColorBrush(Colors.AliceBlue)
         Try

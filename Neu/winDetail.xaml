@@ -145,7 +145,7 @@
                                 <StackPanel>
                                     <Button Name="btnVonProbaugNachGISkopieren" Click="btnVonProbaugNachGISkopieren_Click"
                                 Content="Von Probaug nach GIS kopieren" Margin="5"/>
-                                    <CheckBox Name="cbAuchUnguetige" IsChecked="False" Margin="5">auch ungültige</CheckBox>
+                                    <!--<CheckBox Name="cbAuchUnguetige" IsChecked="False" Margin="5">auch ungültige</CheckBox>-->
                                 </StackPanel>
                             </Border>
 

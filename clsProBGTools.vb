@@ -23,9 +23,9 @@ Public Class clsProBGTools
                     "  in (SELECT id   FROM [prosozbau].[dbo].[PBSBaulastblattSerie]  d " &
                      "            where   PBSBaulastblatt_Key1= " &
                      "        (SELECT  distinct id FROM [prosozbau].[dbo].[GISVIEW2Belastet] a,[PBSBaulastblatt] b " &
-                     "                 where feld1=21478 and b.id=a.feld9 )" &
+                     "                 where feld1=" & baulastblattnr & " and b.id=a.feld9 )" &
                      "    ) " &
-                    "	 and feld1=21478  and Nr=feld2 and IsDeleted=0 " &
+                    "	 and feld1=" & baulastblattnr & "  and Nr=feld2 and IsDeleted=0 " &
                     " order by feld2"
 
             'sqlgeschlossen = "SELECT  feld3 from obj01bla "
@@ -179,7 +179,7 @@ Public Class clsProBGTools
             'End If
 
             l(" MOD initBaulastBlattnr 3")
-            ___showdispatcher("baulasten geschlossenDT: " & geschlossenDT.Rows.Count & Environment.NewLine)
+            '___showdispatcher("baulasten geschlossenDT: " & geschlossenDT.Rows.Count & Environment.NewLine)
 
 
             ___showdispatcher("datentabelle " & balistDT1.Rows.Count & " baulasten eingelesen" & Environment.NewLine)
@@ -198,7 +198,7 @@ Public Class clsProBGTools
             ___showdispatcher("prüfen ob katasterdaten Ok  - abgeschlossen" & Environment.NewLine)
             ___showdispatcher("Liste der als gelöscht markierten Objekte bilden" & Environment.NewLine)
             l(" MOD initBaulastBlattnr 7")
-            list4Geloscht = tools.bildeGeloeschteListe(rawList, anzahlGeloschte)
+            'list4Geloscht = tools.bildeGeloeschteListe(rawList, anzahlGeloschte)
 
             ___showdispatcher("Liste der als gelöscht markierten Objekte  - abgeschlossen" & Environment.NewLine)
             ___showdispatcher("Alle als gelöscht markierten objekte löschen" & Environment.NewLine)
@@ -314,61 +314,61 @@ Public Class clsProBGTools
         End Try
     End Sub
 
-    Friend Shared Sub holeProBaugDatenZusatz(baulastblattnr As Integer, quelleSQL As String)
-        Dim sql, sqlgeschlossen As String
-        Try
-            l(" MOD holeProBaugDaten anfang")
-            '
-            '     FSTausPROBAUGListe.Clear()
-            'sql = getSQLProbaug(baulastblattnr)
-            'sql = getSQLProbaugALt(baulastblattnr)
-            sql = "select distinct * from " & quelleSQL & " where FELD1=" & baulastblattnr & " order by feld2"
+    'Friend Shared Sub holeProBaugDatenZusatz(baulastblattnr As Integer, quelleSQL As String)
+    '    Dim sql, sqlgeschlossen As String
+    '    Try
+    '        l(" MOD holeProBaugDaten anfang")
+    '        '
+    '        '     FSTausPROBAUGListe.Clear()
+    '        'sql = getSQLProbaug(baulastblattnr)
+    '        'sql = getSQLProbaugALt(baulastblattnr)
+    '        sql = "select distinct * from " & quelleSQL & " where FELD1=" & baulastblattnr & " order by feld2"
 
 
-            sql = "SELECT DateAdded,DateDeleted,IsDeleted,Nr " &
-                    "  From [prosozbau].[dbo].[PBSBaulastblattSerieTatbestand] " &
-                    " Where PBSBaulastblattSerie_Key1 in (SELECT id" &
-                    " From [prosozbau].[dbo].[PBSBaulastblattSerie] " &
-                    "   where   PBSBaulastblatt_Key1= " &
-                    "  (SELECT  distinct id FROM [prosozbau].[dbo].[" & quelleSQL & "] a,[PBSBaulastblatt] b " &
-                    " where feld1 = " & baulastblattnr & " And b.id = a.feld9 ) " &
-                    " )   order by nr"
-
-
-
+    '        sql = "SELECT DateAdded,DateDeleted,IsDeleted,Nr " &
+    '                "  From [prosozbau].[dbo].[PBSBaulastblattSerieTatbestand] " &
+    '                " Where PBSBaulastblattSerie_Key1 in (SELECT id" &
+    '                " From [prosozbau].[dbo].[PBSBaulastblattSerie] " &
+    '                "   where   PBSBaulastblatt_Key1= " &
+    '                "  (SELECT  distinct id FROM [prosozbau].[dbo].[" & quelleSQL & "] a,[PBSBaulastblatt] b " &
+    '                " where feld1 = " & baulastblattnr & " And b.id = a.feld9 ) " &
+    '                " )   order by nr"
 
 
 
 
 
 
-            'sqlgeschlossen = "SELECT  feld3 from obj01bla "
-            sqlgeschlossen = sql
-            initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
-            Debug.Print(rawList.Count.ToString)
-            If rawList.Count < 1 Then
-                MessageBox.Show("Probaug lieferte keine sauberen Daten zu BaulastBlattNr: " & baulastblattnr & ". Bitte zuerst auf ProbauG-Seite in Ordnung bringen.")
-            Else
-                l("vor schlkeife ")
-                For i = 0 To rawList.Count - 1
-                    rawList(i).katFST.gemarkungstext = rawList(i).katFST.gemparms.gemcode2gemarkungstext(rawList(i).katFST.gemcode)
-                    rawList(i).katFST.fstueckKombi = rawList(i).katFST.buildFstueckkombi
-                    rawList(i).katFST.gueltig = rawList(i).gueltig
-                    rawList(i).katFST.gebucht = rawList(i).baulastnr
-                    rawList(i).katFST.Prefix = rawList(i).Prefix
-                    rawList(i).katFST.AzNr = rawList(i).AzNr
-                    rawList(i).katFST.AzJahr = rawList(i).AzJahr
-                    rawList(i).katFST.AzOG = rawList(i).AzOG
-                    rawList(i).katFST.Kennziffer_1 = rawList(i).Kennziffer_1
-                    rawList(i).katFST.Kennziffer_2 = rawList(i).Kennziffer_2
-                    rawList(i).katFST.Kennziffer_3 = rawList(i).Kennziffer_3
-                    rawList(i).katFST.Kennziffer_4 = rawList(i).Kennziffer_4
-                    FSTausPROBAUGListe.Add(rawList(i).katFST)
-                Next
-            End If
-            l(" MOD holeProBaugDaten ende")
-        Catch ex As Exception
-            l("Fehler in holeProBaugDaten: " & sql & ex.ToString())
-        End Try
-    End Sub
+
+
+
+    '        'sqlgeschlossen = "SELECT  feld3 from obj01bla "
+    '        sqlgeschlossen = sql
+    '        initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
+    '        Debug.Print(rawList.Count.ToString)
+    '        If rawList.Count < 1 Then
+    '            MessageBox.Show("Probaug lieferte keine sauberen Daten zu BaulastBlattNr: " & baulastblattnr & ". Bitte zuerst auf ProbauG-Seite in Ordnung bringen.")
+    '        Else
+    '            l("vor schlkeife ")
+    '            For i = 0 To rawList.Count - 1
+    '                rawList(i).katFST.gemarkungstext = rawList(i).katFST.gemparms.gemcode2gemarkungstext(rawList(i).katFST.gemcode)
+    '                rawList(i).katFST.fstueckKombi = rawList(i).katFST.buildFstueckkombi
+    '                rawList(i).katFST.gueltig = rawList(i).gueltig
+    '                rawList(i).katFST.gebucht = rawList(i).baulastnr
+    '                rawList(i).katFST.Prefix = rawList(i).Prefix
+    '                rawList(i).katFST.AzNr = rawList(i).AzNr
+    '                rawList(i).katFST.AzJahr = rawList(i).AzJahr
+    '                rawList(i).katFST.AzOG = rawList(i).AzOG
+    '                rawList(i).katFST.Kennziffer_1 = rawList(i).Kennziffer_1
+    '                rawList(i).katFST.Kennziffer_2 = rawList(i).Kennziffer_2
+    '                rawList(i).katFST.Kennziffer_3 = rawList(i).Kennziffer_3
+    '                rawList(i).katFST.Kennziffer_4 = rawList(i).Kennziffer_4
+    '                FSTausPROBAUGListe.Add(rawList(i).katFST)
+    '            Next
+    '        End If
+    '        l(" MOD holeProBaugDaten ende")
+    '    Catch ex As Exception
+    '        l("Fehler in holeProBaugDaten: " & sql & ex.ToString())
+    '    End Try
+    'End Sub
 End Class
