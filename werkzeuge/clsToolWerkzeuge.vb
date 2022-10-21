@@ -57,14 +57,14 @@ Public Class clsToolWerkzeuge
         ___showdispatcher("baulasten einlesen " & Environment.NewLine)
         'balistDT1 = getbalist2Oracle(sql)
         If clsProBGTools.ProbauGIstOracle Then
-            balistDT1 = getbalist2Oracle(sql)
+            'balistDT1 = getbalist2Oracle(sql)
         Else
             balistDT1 = clsProBGTools.getbalist2MSSQL(sql)
         End If
 
 
         If clsProBGTools.ProbauGIstOracle Then
-            geschlossenDT = getbalist2Oracle(sqlgeschlossen)
+            'geschlossenDT = getbalist2Oracle(sqlgeschlossen)
         Else
             geschlossenDT = clsProBGTools.getbalist2MSSQL(sqlgeschlossen)
         End If

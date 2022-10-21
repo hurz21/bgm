@@ -17,13 +17,13 @@ Module tools
     Public logfile As String = srv_unc_path & "\apps\test\bgm\" & "logs\" ' & Environment.UserName & "_"
     Public pfad As String = srv_unc_path & "\fkat\baulasten\"
 
-    Private Const OracleConnectionString As String = "Data Source=  (DESCRIPTION =  " &
-                                                "  (ADDRESS = (PROTOCOL = TCP)(HOST = ora-clu-scan.kreis-of.local)(PORT = 1521))  " &
-                                                "  (LOAD_BALANCE = yes)  " &
-                                                "  (CONNECT_DATA =    " &
-                                                "  (SERVER = DEDICATED)  " &
-                                                "    (SERVICE_NAME = bau.kreis-of.local) " &
-                                                "   )  );User Id=bauguser;Password=test;"
+    'Private Const OracleConnectionString As String = "Data Source=  (DESCRIPTION =  " &
+    '                                            "  (ADDRESS = (PROTOCOL = TCP)(HOST = ora-clu-scan.kreis-of.local)(PORT = 1521))  " &
+    '                                            "  (LOAD_BALANCE = yes)  " &
+    '                                            "  (CONNECT_DATA =    " &
+    '                                            "  (SERVER = DEDICATED)  " &
+    '                                            "    (SERVICE_NAME = bau.kreis-of.local) " &
+    '                                            "   )  );User Id=bauguser;Password=test;"
     Public srv_tablename As String = "baulaschten_f"
     Public FSTausPROBAUGListe As New List(Of clsFlurstueck)
     Public FSTausGISListe As New List(Of clsFlurstueck)
@@ -179,35 +179,35 @@ Module tools
         Next
         Return dict
     End Function
-    Function getbalist2Oracle(sql As String) As DataTable
-        Dim oOracleConn As OracleConnection
-        Dim dt As System.Data.DataTable
-        Dim com As OracleCommand
-        Dim _mycount As Long
-        dt = New DataTable
-        Try
-            l(" MOD getbalist2 anfang")
-            oOracleConn = New OracleConnection(OracleConnectionString)
-            oOracleConn.Open()
-            nachricht("OracleConnection open")
-            com = New OracleCommand(sql, oOracleConn) '"select * from " & tabname$
-            Dim da As New OracleDataAdapter(com)
-            da.MissingSchemaAction = MissingSchemaAction.AddWithKey
-            nachricht("fill")
-            Console.WriteLine("vor fill")
-            _mycount = da.Fill(dt)
-            nachricht("fillfertig: " & _mycount)
-            nachricht("in gisview2 wurden " & _mycount & " datensätze gefunden.=======================")
-            oOracleConn.Close()
-            com.Dispose()
-            da.Dispose()
-            Return dt
-            l(" MOD getbalist2 ende")
-        Catch ex As Exception
-            l("Fehler in getbalist2: " & ex.ToString())
-            Return dt
-        End Try
-    End Function
+    'Function getbalist2Oracle(sql As String) As DataTable
+    '    Dim oOracleConn As OracleConnection
+    '    Dim dt As System.Data.DataTable
+    '    Dim com As OracleCommand
+    '    Dim _mycount As Long
+    '    dt = New DataTable
+    '    Try
+    '        l(" MOD getbalist2 anfang")
+    '        oOracleConn = New OracleConnection(OracleConnectionString)
+    '        oOracleConn.Open()
+    '        nachricht("OracleConnection open")
+    '        com = New OracleCommand(sql, oOracleConn) '"select * from " & tabname$
+    '        Dim da As New OracleDataAdapter(com)
+    '        da.MissingSchemaAction = MissingSchemaAction.AddWithKey
+    '        nachricht("fill")
+    '        Console.WriteLine("vor fill")
+    '        _mycount = da.Fill(dt)
+    '        nachricht("fillfertig: " & _mycount)
+    '        nachricht("in gisview2 wurden " & _mycount & " datensätze gefunden.=======================")
+    '        oOracleConn.Close()
+    '        com.Dispose()
+    '        da.Dispose()
+    '        Return dt
+    '        l(" MOD getbalist2 ende")
+    '    Catch ex As Exception
+    '        l("Fehler in getbalist2: " & ex.ToString())
+    '        Return dt
+    '    End Try
+    'End Function
 
 
 
@@ -278,19 +278,17 @@ Module tools
         End Try
     End Function
     Function dtnachobj(balistDT As DataTable, geschlossen As DataTable) As List(Of clsBaulast)
-        Dim nlist As New List(Of clsBaulast)
+        Dim rawlist As New List(Of clsBaulast)
         Dim lok As New clsBaulast
         Dim evtlFlur As String
         Dim b As String
         Dim iz As Integer = 0
         Try
             l("dtnachobj ---------------------- anfang")
-#If DEBUG Then
+
             'For i = 0 To 100
             For i = 0 To balistDT.Rows.Count - 1
-#Else
-            For i = 0 To balistDT.Rows.Count - 1
-#End If
+
                 lok = New clsBaulast
                 lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim ' 
                 lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2")).Trim '1  sonst als gebucht
@@ -315,7 +313,7 @@ Module tools
                 End If
                 lok.probaugNotationFST.fstueckKombi = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD7")).Trim '406/1
                 lok.gueltig = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD8")).Trim 'J
-            
+
                 lok.status = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD3")).Trim '1
                 'lok.laufnr = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD9"))) '17655
                 lok.laufnr = 0 'CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2"))) 'keine ahnung
@@ -323,23 +321,26 @@ Module tools
                 lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
                 lok.AzJahr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
                 lok.AzOG = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD11"))).Trim 'leer blödsinn
-                lok.aznr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD12"))).Trim 'leer
-                    lok.rechtswert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD13"))).Trim 'leer
-                    lok.hochwert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD14"))).Trim 'leer
+                lok.AzNr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD12"))).Trim 'leer
+                lok.Rechtswert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD13"))).Trim 'leer
+                lok.Hochwert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD14"))).Trim 'leer
                 lok.Prefix = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD15"))).Trim 'leer immmer
                 lok.Kennziffer_1 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD16"))).Trim 'leer
-                    lok.Kennziffer_2 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD17"))).Trim 'leer
-                    lok.Kennziffer_3 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD18"))).Trim 'leer
-                    lok.Kennziffer_4 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD19"))).Trim 'leer
-             '   lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
-              '  lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
-               ' lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                lok.Kennziffer_2 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD17"))).Trim 'leer
+                lok.Kennziffer_3 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD18"))).Trim 'leer
+                lok.Kennziffer_4 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD19"))).Trim 'leer
+
+                lok.datumgeloescht = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("datedeleted"))).Trim 'leer
+                lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("dateadded"))).Trim 'leer
+                '   lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
+                '  lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                ' lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
                 'b = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a13")).Trim
                 If istgeschlossen(lok.blattnr, geschlossen) Then Continue For
                 iz += 1
-                nlist.Add(lok)
+                rawlist.Add(lok)
             Next
-            Return nlist
+            Return rawlist
             l("dtnachobj ---------------------- ende")
         Catch ex As Exception
             l("Fehler in dtnachobj: " & ex.ToString())

@@ -177,6 +177,7 @@
             dgAusProbaug.DataContext = Nothing
             tools.FSTausPROBAUGListe.Clear()
             clsProBGTools.holeProBaugDaten(baulastblattnr, sqlquelle)
+            clsProBGTools.holeProBaugDatenZusatz(baulastblattnr, sqlquelle)
             dgAusProbaug.DataContext = FSTausPROBAUGListe
             tbBauort.Text = rawList(0).bauortNr
             tbDatum1.Text = rawList(0).datum1
