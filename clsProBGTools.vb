@@ -226,7 +226,87 @@ Public Class clsProBGTools
             l("Fehler in initBaulastBlattnr: " & ex.ToString())
         End Try
     End Function
+    Friend Shared Function initBaulastBlattnr2(sql As String, sqlgeschlossen As String) As String
 
+        'order nach laufnr
+        Dim balistDT1 As System.Data.DataTable
+        Dim geschlossenDT As System.Data.DataTable
+        Try
+            l(" MOD initBaulastBlattnr anfang")
+            'checkTiffs()
+            ___showdispatcher(sql & Environment.NewLine)
+            initProbaugNrProbaugGemarkungtext() : initgemeinde()
+            initKatasterGemarkungtext()
+            katasterGemarkungslist = splitKatasterGemarkung()
+            probaugGemarkungsdict = splitgem()
+            gemeindedict = splitgemeinde()
+            ___showdispatcher("gemeinde verzeichnis erstellt" & Environment.NewLine)
+
+
+            l(" MOD initBaulastBlattnr 1")
+            ___showdispatcher("baulasten einlesen " & Environment.NewLine)
+            If ProbauGIstOracle Then
+                'balistDT1 = getbalist2Oracle(sql)
+            Else
+                balistDT1 = getbalist2MSSQL(sql)
+            End If
+            l(" MOD initBaulastBlattnr 2")
+            'geschlossenDT = getbalist2Oracle(sqlgeschlossen)
+
+            'If ProbauGIstOracle Then
+            '    'geschlossenDT = getbalist2Oracle(sqlgeschlossen)
+            'Else
+            '    geschlossenDT = getbalist2MSSQL(sqlgeschlossen)
+            'End If
+
+            l(" MOD initBaulastBlattnr 3")
+            '___showdispatcher("baulasten geschlossenDT: " & geschlossenDT.Rows.Count & Environment.NewLine)
+
+
+            ___showdispatcher("datentabelle " & balistDT1.Rows.Count & " baulasten eingelesen" & Environment.NewLine)
+            ___showdispatcher("baulasten liste erstellen ")
+
+            rawList = dtnachobj2(balistDT1, geschlossenDT)
+            l(" MOD initBaulastBlattnr 4")
+            ___showdispatcher(" - abgeschlossen" & Environment.NewLine)
+            ___showdispatcher("baulasten liste jetzt erweitern ... ")
+            ___showdispatcher("")
+            l(" MOD initBaulastBlattnr 5")
+            objErweitern(rawList, anzahltiff, anzahl_dateiexitiert, anzahl_blattNrIst0) 'balist
+            ___showdispatcher("prüfen ob katasterdaten Ok " & Environment.NewLine)
+            l(" MOD initBaulastBlattnr 6")
+            istKatasterFormellOK(rawList, anzahlKatasterFormellOK)
+            ___showdispatcher("prüfen ob katasterdaten Ok  - abgeschlossen" & Environment.NewLine)
+            ___showdispatcher("Liste der als gelöscht markierten Objekte bilden" & Environment.NewLine)
+            l(" MOD initBaulastBlattnr 7")
+            'list4Geloscht = tools.bildeGeloeschteListe(rawList, anzahlGeloschte)
+
+            ___showdispatcher("Liste der als gelöscht markierten Objekte  - abgeschlossen" & Environment.NewLine)
+            ___showdispatcher("Alle als gelöscht markierten objekte löschen" & Environment.NewLine)
+            l(" MOD initBaulastBlattnr 8")
+            viererLoeschen(vierergeloescht)
+            ___showdispatcher("Alle als gelöscht markierten  Objekte löschen - abgeschlossen " & Environment.NewLine)
+            Dim katnichtOKAberMitTiff_summe As String
+            ___showdispatcher("Prüfen ob Baulasten mit Tiff aber ohne Katasterangaben " & Environment.NewLine)
+            l(" MOD initBaulastBlattnr 9")
+            istKatnichtOKaberTiffVorhanden(rawList, katnichtOKAberMitTiff_summe)
+
+            ___showdispatcher("Prüfen ob Baulasten mit Tiff aber ohne Katasterangaben  - abgeschlossen" & Environment.NewLine)
+            ___showdispatcher("baulasten liste jetzt erweitern - abgeschlossen " & Environment.NewLine)
+            ' showdispatcher("    mit Tiff-Datei: " & anzahltiff)
+            ___showdispatcher("   Tiff-Datei existiert: " & anzahl_dateiexitiert & Environment.NewLine)
+            ___showdispatcher("   BlattNr = 0: " & anzahl_blattNrIst0 & Environment.NewLine)
+            ___showdispatcher("   KatasterOK: " & anzahlKatasterFormellOK & Environment.NewLine)
+            ___showdispatcher("   katnichtOKAberMitTiff_summe: " & Environment.NewLine & katnichtOKAberMitTiff_summe & Environment.NewLine)
+            ___showdispatcher("   anzahlGeloschtMarkiert: " & anzahlGeloschte & Environment.NewLine)
+            ___showdispatcher("   real gelöscht: " & vierergeloescht & Environment.NewLine)
+            l(" MOD initBaulastBlattnr fertig")
+            l(" MOD initBaulastBlattnr ende")
+            Return sqlgeschlossen
+        Catch ex As Exception
+            l("Fehler in initBaulastBlattnr: " & ex.ToString())
+        End Try
+    End Function
     Shared Function getbalist2MSSQL(sql As String) As DataTable
         Dim oOracleConn As SqlClient.SqlConnection
         Dim dt As System.Data.DataTable
@@ -285,8 +365,32 @@ Public Class clsProBGTools
             'sql = getSQLProbaugALt(baulastblattnr)
             sql = "select distinct * from gisview2 " '& quelleSQL '& " where FELD1=" & baulastblattnr & " order by feld2"
             'sqlgeschlossen = "SELECT  feld3 from obj01bla "
+
+            'Dim baulastblattnr As String = "111458"
+
+            'sql = "SELECT distinct DateAdded,DateDeleted,isdeleted, a2.* " &
+            '        "  FROM [prosozbau].[dbo].[PBSBaulastblattSerieTatbestand] c," &
+            '        "       [prosozbau].[dbo].[GISVIEW2] a2 " &
+            '         " where PBSBaulastblattSerie_Key1 " &
+            '        "  in (SELECT id   FROM [prosozbau].[dbo].[PBSBaulastblattSerie]  d " &
+            '         "            where   PBSBaulastblatt_Key1= " &
+            '         "        (SELECT  distinct id FROM [prosozbau].[dbo].[GISVIEW2] a,[PBSBaulastblatt] b " &
+            '         "                 where feld1=" & baulastblattnr & " and b.id=a.feld9 )" &
+            '         "    ) " &
+            '        "	 and feld1=" & baulastblattnr & "  and Nr=feld2 and IsDeleted=0 " &
+            '        " order by feld2"
+            ' funzt
+
+
+
+
             sqlgeschlossen = sql
-            initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
+            initBaulastBlattnr2(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
+
+
+
+
+
             Debug.Print(rawList.Count.ToString)
             If rawList.Count < 1 Then
                 'MessageBox.Show("Probaug lieferte keine sauberen Daten zu BaulastBlattNr: " & baulastblattnr & ". Bitte zuerst auf ProbauG-Seite in Ordnung bringen.")

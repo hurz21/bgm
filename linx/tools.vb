@@ -209,7 +209,9 @@ Module tools
     '    End Try
     'End Function
 
-
+    Function mylog(ttt As String) As Boolean
+        Console.WriteLine(ttt)
+    End Function
 
     Function splitgem() As Dictionary(Of Integer, String)
         Dim dict As New Dictionary(Of Integer, String)
@@ -347,7 +349,89 @@ Module tools
             Return Nothing
         End Try
     End Function
+    Function dtnachobj2(balistDT As DataTable, geschlossen As DataTable) As List(Of clsBaulast)
+        Dim rawlist As New List(Of clsBaulast)
+        Dim lok As New clsBaulast
+        Dim evtlFlur As String
+        Dim b As String
+        Dim iz As Integer = 0
+        Try
+            l("dtnachobj ---------------------- anfang")
 
+            'For i = 0 To 100
+            For i = 0 To balistDT.Rows.Count - 1
+                Try
+                    lok = New clsBaulast
+                    lok.blattnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD1")).Trim ' 
+                    lok.baulastnr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2")).Trim '1  sonst als gebucht
+#If DEBUG Then
+                    If lok.blattnr = "90764" Then
+                        Debug.Print("")
+                    End If
+#End If
+                    lok.bauortNr = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD4")).Trim '2
+                    'lok.probaugNotationFST.gemcode = 
+                    If clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD5")) IsNot Nothing Then
+
+                        If IsNumeric(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD5"))) Then
+                            lok.probaugNotationFST.gemcode = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD5")))
+                        Else
+                            mylog("fehler in lok.blattnr, gemarkung kaputt , " & lok.blattnr)
+                            Continue For
+                        End If
+                    End If
+                    evtlFlur = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD6")).Trim '10
+                    Console.WriteLine("iz1 " & iz)
+
+                    If evtlFlur.IsNothingOrEmpty Then
+                        lok.probaugNotationFST.flur = 0
+                    Else
+                        If IsNumeric(evtlFlur) Then
+                            lok.probaugNotationFST.flur = CInt(evtlFlur)
+                        Else
+                            lok.probaugNotationFST.flur = 0
+                        End If
+                    End If
+                    lok.probaugNotationFST.fstueckKombi = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD7")).Trim '406/1
+                    lok.gueltig = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD8")).Trim 'J
+
+                    lok.status = clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD3")).Trim '1
+                    'lok.laufnr = CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD9"))) '17655
+                    lok.laufnr = 0 'CInt(clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD2"))) 'keine ahnung
+
+                    lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
+                    lok.AzJahr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD10"))).Trim 'leer
+                    lok.AzOG = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD11"))).Trim 'leer blödsinn
+                    lok.AzNr = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD12"))).Trim 'leer
+                    lok.Rechtswert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD13"))).Trim 'leer
+                    lok.Hochwert = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD14"))).Trim 'leer
+                    lok.Prefix = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD15"))).Trim 'leer immmer
+                    lok.Kennziffer_1 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD16"))).Trim 'leer
+                    lok.Kennziffer_2 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD17"))).Trim 'leer
+                    lok.Kennziffer_3 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD18"))).Trim 'leer
+                    lok.Kennziffer_4 = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("FELD19"))).Trim 'leer
+
+                    lok.datumgeloescht = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("datedeleted"))).Trim 'leer
+                    lok.datum = (clsDBtools.fieldvalue(balistDT.Rows(i).Item("dateadded"))).Trim 'leer
+                    '   lok.datum1 = clsDBtools.fieldvalue(balistDT.Rows(i).Item("angelegt")).Trim '"2020.07.10"
+                    '  lok.datumgeloescht = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                    ' lok.probaugNotationFST.zeigtauf = clsDBtools.fieldvalue(balistDT.Rows(i).Item("loesch")).Trim 'leer
+                    'b = clsDBtools.fieldvalue(balistDT.Rows(i).Item("a13")).Trim
+                    If istgeschlossen(lok.blattnr, geschlossen) Then Continue For
+                    iz += 1
+                    rawlist.Add(lok)
+                Catch ex As Exception
+                    l("Fehler in dtnachobj: " & ex.ToString())
+                    Return Nothing
+                End Try
+            Next
+            Return rawlist
+            l("dtnachobj ---------------------- ende")
+        Catch ex As Exception
+            l("Fehler in dtnachobj: " & ex.ToString())
+            Return Nothing
+        End Try
+    End Function
     Private Function istgeschlossen(blattnr As String, geschlossen As DataTable) As Boolean
         Try
             l(" MOD istgeschlossen anfang")

@@ -92,7 +92,7 @@
 
     Private Sub btnbeguenstigt_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
-        MsgBox("aaa")
+        'MsgBox("aaa")
         clsProBGTools.holeAlleBeguenstigten
 
 
