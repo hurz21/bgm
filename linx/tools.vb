@@ -46,7 +46,8 @@ Module tools
 #If DEBUG Then
             '.CustomLocation = mgisUserRoot & "logs\"
             logfile = "d:\" & "" ' & Environment.UserName & "_"
-            IO.Directory.CreateDirectory(IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments),
+            Dim testfolder = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)
+            IO.Directory.CreateDirectory(IO.Path.Combine(testfolder,
                                  "bgm"))
             logfile = IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments),
                                  "bgm")
