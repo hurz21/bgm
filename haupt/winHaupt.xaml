@@ -5,27 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bgm" AllowDrop="True"
         mc:Ignorable="d" Left="1" WindowStyle="ToolWindow"    Drop="Window_Drop"
-        Title="BGM" Height="239.952" Width="154.302" Background="Beige" >
+        Title="BGM" Height="336" Width="154.302" Background="Beige" >
     <DockPanel Margin="5">
+
         <StackPanel Margin="5">
             <Button Name="btnNeu" Click="btnNeu_Click" Content="Neu" Margin="5" 
                     IsEnabled="False" Visibility="Collapsed"/>
-            <GroupBox>
+            <GroupBox Name="grpBaulasten">
                 <StackPanel>
 
                     <Button Name="btnEdit" Click="btnEdit_Click" Content="zu Baulast" 
                             IsDefault="True" Margin="5"
                              Drop="Window_Drop" AllowDrop="True"/>
                     <TextBox x:Name="tbblnr" HorizontalAlignment="Center" Width="70">
-                   
+
                     </TextBox>
+                    <Button Name="btnBestand" Click="btnBestand_Click" Content="Bestandsliste" IsEnabled="True" Margin="5"/>
+                    <Button x:Name="btnPDFTool" Click="btnPDFTool_Click" Content="Werkzeuge" IsEnabled="True" Margin="5"/>
+                    <Button Name="btnGIS" Click="btnGIS_Click" Content="GIS" Margin="5"/>
 
                 </StackPanel>
             </GroupBox>
-            <Button Name="btnBestand" Click="btnBestand_Click" Content="Bestandsliste" IsEnabled="True" Margin="5"/>
-            <Button x:Name="btnPDFTool" Click="btnPDFTool_Click" Content="Werkzeuge" IsEnabled="True" Margin="5"/>
-            <Button Name="btnGIS" Click="btnGIS_Click" Content="GIS" Margin="5"/>
+            <Button Name="btnEigentuemer"    >Eigentümer für Flurstück
 
+            </Button>
+            <Button Name="btnRevers" >Flurstück zu Eigentümer
+
+            </Button>
         </StackPanel>
+
+
+
     </DockPanel>
 </Window>
