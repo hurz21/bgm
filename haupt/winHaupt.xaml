@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bgm" AllowDrop="True"
         mc:Ignorable="d" Left="1" WindowStyle="ToolWindow"    Drop="Window_Drop"
-        Title="BGM" Height="336" Width="154.302" Background="Beige" >
+        Title="BGM" Height="336" Width="177" Background="Beige" >
     <DockPanel Margin="5">
 
-        <StackPanel Margin="5">
+        <StackPanel Margin="5" Width="145">
             <Button Name="btnNeu" Click="btnNeu_Click" Content="Neu" Margin="5" 
                     IsEnabled="False" Visibility="Collapsed"/>
             <GroupBox Name="grpBaulasten">
@@ -29,7 +29,7 @@
             <Button Name="btnEigentuemer"    >Eigentümer für Flurstück
 
             </Button>
-            <Button Name="btnRevers" >Flurstück zu Eigentümer
+            <Button Name="btnRevers" >Flurstücke zu Eigentümer
 
             </Button>
         </StackPanel>
