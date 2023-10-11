@@ -3,7 +3,7 @@ Imports System.Data.SqlClient
 Public Class toolsEigentuemer
     Public Shared paradigmaMsql As New clsDBspecMSSQL
     Public Shared paradigmaMsqlmyconn As SqlConnection
-    Public Shared mssqlhost As String = "msql01"
+    Public Shared mssqlhost As String = "kh-w-sql02"
     Shared Sub initMssql()
         Try
             l(" MOD initMssql anfang")
