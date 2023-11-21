@@ -5,8 +5,9 @@ Imports iTextSharp.text.rtf
 Public Class clsProBGTools
     Shared Property ProbauGIstOracle As Boolean = False
 
-    Public Shared Sub holeProBaugDaten(baulastblattnr As Integer, quelleSQL As String)
+    Public Shared Sub holeProBaugDaten(baulastblattnr As Integer, quelleSQL As String, ByRef abbruch As Boolean)
         Dim sql, sqlgeschlossen As String
+        abbruch = False
         Try
             l(" MOD holeProBaugDaten anfang")
             '
@@ -31,6 +32,11 @@ Public Class clsProBGTools
             'sqlgeschlossen = "SELECT  feld3 from obj01bla "
             sqlgeschlossen = sql
             initBaulastBlattnr(sql, sqlgeschlossen) ' liefert balistDT1 und geschlossenDT as dt
+
+            If rawList Is Nothing Then
+                abbruch = True
+                Exit Sub
+            End If
             Debug.Print(rawList.Count.ToString)
             If rawList.Count < 1 Then
                 MessageBox.Show("Probaug lieferte keine sauberen Daten zu BaulastBlattNr: " & baulastblattnr & ". Bitte zuerst auf ProbauG-Seite in Ordnung bringen.")
@@ -169,6 +175,7 @@ Public Class clsProBGTools
             Else
                 balistDT1 = getbalist2MSSQL(sql)
             End If
+            l("SQL: " & sql)
             l(" MOD initBaulastBlattnr 2")
             'geschlossenDT = getbalist2Oracle(sqlgeschlossen)
 
@@ -186,6 +193,14 @@ Public Class clsProBGTools
             ___showdispatcher("baulasten liste erstellen ")
 
             rawList = dtnachobj(balistDT1, geschlossenDT)
+            If rawList Is Nothing Then
+                MessageBox.Show("Die Probaug Daten dieser Baulast " & "sind nicht in Ordnung. " & vbCrLf &
+                    "  " & vbCrLf &
+                    "  " & vbCrLf &
+                   "Anzahl Teilflächen: " & balistDT1.Rows.Count & vbCrLf &
+                                "Abbruch!!!", "Fehler in ProbauG-Daten", MessageBoxButton.OK, MessageBoxImage.Error)
+                Return Nothing
+            End If
             l(" MOD initBaulastBlattnr 4")
             ___showdispatcher(" - abgeschlossen" & Environment.NewLine)
             ___showdispatcher("baulasten liste jetzt erweitern ... ")

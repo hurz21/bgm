@@ -24,6 +24,7 @@ Public Class winDetail
 
     Private Sub winDetail_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         e.Handled = True
+        Dim abbruch As Boolean = False
         l("windetail loaded anfang")
         btndigit.Visibility = Visibility.Collapsed
 #If DEBUG Then
@@ -32,7 +33,11 @@ Public Class winDetail
         End If
 #End If
         If IsNumeric(tbBaulastNr.Text) Then
-            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+            refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, abbruch)
+            If abbruch Then
+                Close()
+                End
+            End If
             refreshGIS(CInt(tbBaulastNr.Text))
             refreshTIFFbox()
             'hier wird firstrange calculiert
@@ -102,14 +107,17 @@ Public Class winDetail
 
     Private Sub btnAusProbaug_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
+        Dim abbruch As Boolean = False
         refreshGIS(CInt(tbBaulastNr.Text))
         gidInString = clsGIStools.bildegidstring()
         range = clsGIStools.calcNewRange(gidInString)
-        refreshall()
+        refreshall(abbruch)
     End Sub
 
-    Private Sub refreshall()
-        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+    Private Sub refreshall(abbruch As Boolean)
+
+        refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, abbruch)
+        If abbruch Then Exit Sub
         refreshGIS(CInt(tbBaulastNr.Text))
         refreshTIFFbox()
         refreshMap()
@@ -172,13 +180,20 @@ Public Class winDetail
         Canvas.SetLeft(VGcanvasImage, 0)
     End Sub
 
-    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String)
+    Sub refreshProbaug(baulastblattnr As Integer, sqlquelle As String, ByRef abbruch As Boolean)
 
         Try
             l(" MOD refreshProbaug anfang")
             dgAusProbaug.DataContext = Nothing
             tools.FSTausPROBAUGListe.Clear()
-            clsProBGTools.holeProBaugDaten(baulastblattnr, sqlquelle)
+
+            clsProBGTools.holeProBaugDaten(baulastblattnr, sqlquelle, abbruch)
+            'abbruch = False
+            If abbruch Then
+                MsgBox("Anwendung wird beendet !")
+                abbruch = True
+                Exit Sub
+            End If
             'clsProBGTools.holeProBaugDatenZusatz(baulastblattnr, sqlquelle)
             dgAusProbaug.DataContext = FSTausPROBAUGListe
             tbBauort.Text = rawList(0).bauortNr
@@ -521,6 +536,7 @@ Public Class winDetail
 
     Private Sub StackPanel_Drop(sender As Object, e As DragEventArgs)
         e.Handled = True
+        Dim abbruch As Boolean = False
         'soll nur die nummer übernehmen
         Dim filenames As String()
         Dim zuielname As String = ""
@@ -542,7 +558,7 @@ Public Class winDetail
 
                 fi = Nothing
             End If
-            refreshall()
+            refreshall(abbruch)
             l(" MOD StackPanel_Drop ende")
         Catch ex As Exception
             l("Fehler in StackPanel_Drop: " & ex.ToString())
@@ -611,19 +627,20 @@ Public Class winDetail
     Private Sub setzeQuellUndTargetTabelle()
         Dim grayBrush As SolidColorBrush = New SolidColorBrush(Colors.LightGray)
         Dim blueBrush As SolidColorBrush = New SolidColorBrush(Colors.AliceBlue)
+        Dim abbruch As Boolean = False
         Try
             If chkQuelle.IsChecked Then
                 quelleSQL = "   gisview2belastet "
                 targetGISTabelle = "baulaschten_f"
                 tbQuelle.Text = " Belastet aus Probaug"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, abbruch)
                 spTop.Background = grayBrush
             Else
                 quelleSQL = "   gisview2 "
                 tbQuelle.Text = " Begünstigt aus Probaug"
                 spTop.Background = blueBrush
                 targetGISTabelle = "baul_guen_f"
-                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL)
+                refreshProbaug(CInt(tbBaulastNr.Text), quelleSQL, abbruch)
             End If
         Catch ex As Exception
 
