@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>bgm</RootNamespace>
     <AssemblyName>bgm</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -327,7 +327,7 @@
   <PropertyGroup>
     <PostBuildEvent>rem if /I "$(ConfigurationName)" == "Release" Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 2020.3
 if $(ConfigurationName) == Release (
-  copy $(targetfilename) l:\apps\bgm\bgm.exe
+ copy $(targetfilename) l:\apps\bgm\bgm.exe
 )</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

@@ -31,7 +31,7 @@
 
     Private Sub winWerkzeuge_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         e.Handled = True
-        tbPDFPfad.Text = "l:\fkat\baulasten"
+        tbPDFPfad.Text = srv_unc_path & "\fkat\baulasten"
         Title = "BGM: Werkzeuge " & " V.: " & bgmVersion
     End Sub
 
