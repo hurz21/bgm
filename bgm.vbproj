@@ -150,6 +150,9 @@
     <Compile Include="eigentuemer\ParaFlurstueck.vb" />
     <Compile Include="eigentuemer\RaumbezugsTyp.vb" />
     <Compile Include="eigentuemer\toolsEigentuemer.vb" />
+    <Compile Include="eigentuemer\winFlurstueck.xaml.vb">
+      <DependentUpon>winFlurstueck.xaml</DependentUpon>
+    </Compile>
     <Compile Include="glob1.vb" />
     <Compile Include="haupt\clsChecks.vb" />
     <Compile Include="haupt\winHaupt.xaml.vb">
@@ -184,6 +187,10 @@
       <DependentUpon>winFST.xaml</DependentUpon>
     </Compile>
     <Page Include="Bestand\winBestand.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="eigentuemer\winFlurstueck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

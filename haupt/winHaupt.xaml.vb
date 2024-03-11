@@ -9,8 +9,9 @@
             tbblnr.Text = "21504"
             '"POLYGON ((479015 5538655,479033 5538660,479035 5538656,479017 5538650,479015 5538655))" 
         Else
-            MessageBox.Show("Sie haben keine Berechtigung für diese Anwendung. Abbruch!")
-            Close()
+            'MessageBox.Show("Sie haben keine Berechtigung für diese Anwendung. Abbruch!")
+            'Close()
+            stpAdminOnly.Visibility = Visibility.Collapsed
         End If
         setLogfile(logfile) : l("Start " & Now) : l("mgisversion:" & bgmVersion)
         initdb()
@@ -18,6 +19,7 @@
     End Sub
 
     Private Shared Function isAutho() As Boolean
+        Return False
         Return Environment.UserName.ToLower = "storcksdieck_a" Or
                 Environment.UserName.ToLower = "hartmann_s" Or
                 Environment.UserName.ToLower = "briese_j" Or
@@ -102,5 +104,15 @@
 
     End Sub
 
+    Private Sub btnbplan_Click(sender As Object, e As RoutedEventArgs)
+        e.Handled = True
+        Dim p As New Process
+        p.Start("\\gis\gdvell\apps\bplankat\bplanstart.bat")
+    End Sub
 
+    Private Sub btngetFlurstueck_Click(sender As Object, e As RoutedEventArgs)
+        e.Handled = True
+        Dim f As New winFlurstueck
+        f.showdialog
+    End Sub
 End Class
