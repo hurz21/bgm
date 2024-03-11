@@ -9,12 +9,14 @@ Module tools
     Public srv_schema As String = "paradigma_userdata"
     Public srv_subdirBaulsten As String = "paradigmacache/baulasten"
     Public srv_unc_path As String = "\\gis\gdvell"
+    'Public srv_unc_path As String = "\\gis\d$"
     Public gisexe As String = "C:\kreisoffenbach\mgis\mgis.exe"
     Public bgmVersion As String = My.Resources.BuildDate.Trim.Replace(vbCrLf, "")
     Public Property baulastenoutDir As String = "c:\baulastenout"
     Public Property wkt As String = ""
     Public Property FSTausGISListeFehlt As List(Of clsFlurstueck)
-    Public logfile As String = srv_unc_path & "\apps\test\bgm\" & "logs\" ' & Environment.UserName & "_"
+    Public logfile As String = "C:\kreisoffenbach\bgm\" ' & Environment.UserName & "_"
+    'Public logfile As String = srv_unc_path & "\apps\test\bgm\" & "logs\" ' & Environment.UserName & "_"
     Public pfad As String = srv_unc_path & "\fkat\baulasten\"
 
     'Private Const OracleConnectionString As String = "Data Source=  (DESCRIPTION =  " &

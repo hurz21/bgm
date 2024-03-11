@@ -22,6 +22,7 @@
                 Environment.UserName.ToLower = "hartmann_s" Or
                 Environment.UserName.ToLower = "briese_j" Or
                 Environment.UserName.ToLower = "feinen_j" Or
+                Environment.UserName.ToLower = "thieme_m" Or
                 Environment.UserName.ToLower = "zahnlückenpimpf" Or
                 Environment.UserName.ToLower = "kroemmelbein_m"
     End Function
