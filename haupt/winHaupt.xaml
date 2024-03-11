@@ -11,13 +11,14 @@
             <StackPanel Margin="5" Width="145" Name="stpAdminOnly">
                 <Button Name="btnNeu" Click="btnNeu_Click" Content="Neu" Margin="5" 
                     IsEnabled="False" Visibility="Collapsed"/>
-                <GroupBox Name="grpBaulasten">
+                <GroupBox Name="grpBaulasten" Background="LightGray">
                     <StackPanel>
 
                         <Button Name="btnEdit" Click="btnEdit_Click" Content="zu Baulast" 
                             IsDefault="True" Margin="5"
                              Drop="Window_Drop" AllowDrop="True"/>
-                        <TextBox x:Name="tbblnr" HorizontalAlignment="Center" Width="70">
+                        <TextBox x:Name="tbblnr" HorizontalAlignment="Center"
+                                 Width="70" >
 
                         </TextBox>
                         <Button Name="btnBestand" Click="btnBestand_Click" Content="Bestandsliste" 
@@ -31,7 +32,8 @@
 
             </StackPanel>
             <StackPanel IsEnabled="False"> 
-                <TextBlock Name="tbFlurstueckDisplay" Margin="5" Foreground="Gray" Background="White">
+                <TextBlock Name="tbFlurstueckDisplay" Margin="5" Foreground="Gray" 
+                           Background="White" Height="60" TextWrapping="Wrap">
                 bitte Flurstück wählen
                 </TextBlock>
                 <Button Name="btnEigentuemer"  Margin="5"  >Eigentümer für Flurstück

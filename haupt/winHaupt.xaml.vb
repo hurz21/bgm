@@ -19,7 +19,7 @@
     End Sub
 
     Private Shared Function isAutho() As Boolean
-        Return False
+        'Return False
         Return Environment.UserName.ToLower = "storcksdieck_a" Or
                 Environment.UserName.ToLower = "hartmann_s" Or
                 Environment.UserName.ToLower = "briese_j" Or
@@ -113,6 +113,13 @@
     Private Sub btngetFlurstueck_Click(sender As Object, e As RoutedEventArgs)
         e.Handled = True
         Dim f As New winFlurstueck
-        f.showdialog
+        f.ShowDialog()
+        Dim kurz As String
+        kurz = f.normflst.gemarkungstext &
+            ", Flur: " & f.normflst.flur &
+            ": : " & f.normflst.zaehler &
+            "/" & f.normflst.nenner
+        tbFlurstueckDisplay.Text = kurz
+        'tbFlurstueckDisplay.Background=
     End Sub
 End Class

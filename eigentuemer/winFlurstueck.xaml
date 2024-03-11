@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bgm"
         mc:Ignorable="d"
-        Title="winFlurstueck" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="winFlurstueck" Height="287" Width="339" WindowStartupLocation="CenterScreen">
     <Window.Resources>
    
     <XmlDataProvider x:Key="XMLSourceComboBoxgemarkungen" />

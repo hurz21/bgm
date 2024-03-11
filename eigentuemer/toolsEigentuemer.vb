@@ -90,4 +90,5 @@ Public Class toolsEigentuemer
             Return ""
         End Try
     End Function
+
 End Class
